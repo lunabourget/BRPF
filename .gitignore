@@ -1,0 +1,11 @@
+// Ignore Visual Studio Code settings
+// ignore les paramètres de configuration de Visual Studio Code
+settings.json
+.vscode/
+
+// Ignore the build output directory
+// ignore les fichiers de conf et de sortie de la compilation
+node_modules/
+dist/
+.env
+*.log
