@@ -20,15 +20,56 @@
 </header>
 
   <!-- Hero -->
-  <section class="hero">
+  <section class="hero hero--center">
     <div class="hero-text">
       <h1>Formulaire de réclamation</h1>
       <p>
         Expliquez-nous ce qui ne va pas dans votre scénario. Chaque réclamation est étudiée avec sérieux, respect et cohérence.      </p>
-      <a href="declarer-reclamation.html" class="btn-primary">Envoyer ma réclamation</a>
+
+      <form class="claim-form" action="#" method="post">
+        <div class="form-group">
+          <label for="character-name">Nom du personnage</label>
+          <input type="text" id="character-name" name="character-name" placeholder="Ex : Cendrillon" required>
+        </div>
+
+        <div class="form-group">
+          <label for="work">Œuvre concernée</label>
+          <input type="text" id="work" name="work" placeholder="Ex : Cendrillon (1950)" required>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description de la réclamation</label>
+          <textarea id="description" name="description" rows="6" placeholder="Décrivez ce qui ne va pas dans votre scénario..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <span class="form-label">Tag(s)</span>
+          <div class="tags-select">
+            <label class="tag-option"><input type="checkbox" name="tags" value="injustice"> Injustice</label>
+            <label class="tag-option"><input type="checkbox" name="tags" value="stereotype"> Stéréotype</label>
+            <label class="tag-option"><input type="checkbox" name="tags" value="incoherence"> Incohérence</label>
+            <label class="tag-option"><input type="checkbox" name="tags" value="fin-injuste"> Fin injuste</label>
+            <label class="tag-option"><input type="checkbox" name="tags" value="mort-injustifiee"> Mort injustifiée</label>
+            <label class="tag-option"><input type="checkbox" name="tags" value="sous-exploite"> Personnage sous-exploité</label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary">Envoyer ma réclamation</button>
+      </form>
     </div>
   </section>
 
+  <script>
+    document.querySelector('.claim-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const characterName = document.getElementById('character-name').value;
+      const ref = Date.now().toString().slice(-6);
+
+      const params = new URLSearchParams({ ref, name: characterName });
+      window.location.href = 'confirmation.html?' + params.toString();
+    });
+  </script>
 
 </body>
 </html>
