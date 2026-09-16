@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/app.ts",
-    "build": "tsc",
+    "build": "tsc && mkdir -p dist/database && cp src/database/schema.sql dist/database/schema.sql",
     "start": "node dist/app.js"
   },
   "keywords": [],
