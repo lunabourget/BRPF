@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
 import { ClaimRepository } from '../repositories/claim.repository.js';
+import type { AuthenticatedRequest } from '../middlewares/auth.middleware.js';
 
 export class ClaimController {
   private claimRepository: ClaimRepository;
@@ -9,12 +10,12 @@ export class ClaimController {
   }
 
   // GET /api/claims?userId=xxx
-  async getAllByUser(req: Request, res: Response): Promise<void> {
+  async getAllByUser(req: AuthenticatedRequest, res: Response): Promise<void> {
     try {
-      const { userId } = req.query;
+      const userId = req.userId;
 
       if (typeof userId !== 'string') {
-        res.status(400).json({ error: "L'ID utilisateur doit être une chaîne de caractères valide." });
+        res.status(401).json({ error: 'Utilisateur non identifié.' });
         return;
       }
 

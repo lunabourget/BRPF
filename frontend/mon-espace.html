@@ -20,8 +20,8 @@
           <img src="./src/assets/avatar-placeholder.svg" alt="Avatar du personnage connecté">
         </div>
         <div>
-          <h1>Cendrillon</h1>
-          <p class="profile-subtitle">Personnage connecté</p>
+          <h1 id="profile-name">Mon espace</h1>
+          <p id="profile-subtitle" class="profile-subtitle">Personnage connecté</p>
         </div>
       </div>
       <p class="profile-description">Retrouvez ici le suivi de toutes vos réclamations, triées par statut.</p>
@@ -38,100 +38,8 @@
       </div>
     </div>
 
-    <div class="claims-section" data-status="pending">
-      <h2>En cours</h2>
-      <div class="claims-list">
-
-        <article class="claim-card">
-          <div class="claim-card-header">
-            <h3>Cendrillon (1950)</h3>
-            <span class="status-badge status-pending">En cours</span>
-          </div>
-          <div class="claim-tags">
-            <span class="claim-tag">Injustice</span>
-            <span class="claim-tag">Fin injuste</span>
-          </div>
-          <p class="claim-ref">Réf. #482913</p>
-        </article>
-
-        <article class="claim-card">
-          <div class="claim-card-header">
-            <h3>Cendrillon 2 : Une vie de princesse (2002)</h3>
-            <span class="status-badge status-pending">En cours</span>
-          </div>
-          <div class="claim-tags">
-            <span class="claim-tag">Stéréotype</span>
-          </div>
-          <p class="claim-ref">Réf. #479204</p>
-        </article>
-
-      </div>
-    </div>
-
-    <div class="claims-section" data-status="accepted">
-      <h2>Acceptées</h2>
-      <div class="claims-list">
-
-        <article class="claim-card">
-          <div class="claim-card-header">
-            <h3>Cendrillon (2015, film)</h3>
-            <span class="status-badge status-accepted">Acceptée</span>
-          </div>
-          <div class="claim-tags">
-            <span class="claim-tag">Sous-exploité(e)</span>
-          </div>
-          <p class="claim-ref">Réf. #461027</p>
-          <div class="claim-justification">
-            <p class="claim-justification-label">Justification</p>
-            <p class="claim-justification-text">Le comité reconnaît que le personnage manque de profondeur dans cette adaptation. Réclamation validée.</p>
-          </div>
-        </article>
-
-      </div>
-    </div>
-
-    <div class="claims-section" data-status="rejected">
-      <h2>Refusées</h2>
-      <div class="claims-list">
-
-        <article class="claim-card">
-          <div class="claim-card-header">
-            <h3>Cendrillon 3 : Le Sortilège du temps (2007)</h3>
-            <span class="status-badge status-rejected">Refusée</span>
-          </div>
-          <div class="claim-tags">
-            <span class="claim-tag">Incohérence</span>
-          </div>
-          <p class="claim-ref">Réf. #455812</p>
-          <div class="claim-justification">
-            <p class="claim-justification-label">Justification</p>
-            <p class="claim-justification-text">Le rebondissement scénaristique est cohérent avec l'univers de l'œuvre. Réclamation rejetée.</p>
-          </div>
-        </article>
-
-      </div>
-    </div>
-
-    <div class="claims-section" data-status="invalid">
-      <h2>Invalides</h2>
-      <div class="claims-list">
-
-        <article class="claim-card">
-          <div class="claim-card-header">
-            <h3>Cendrillon (conte, Charles Perrault)</h3>
-            <span class="status-badge status-invalid">Invalide</span>
-          </div>
-          <div class="claim-tags">
-            <span class="claim-tag">Mort injustifiée</span>
-          </div>
-          <p class="claim-ref">Réf. #450193</p>
-          <div class="claim-justification">
-            <p class="claim-justification-label">Justification</p>
-            <p class="claim-justification-text">La description ne correspond à aucun événement de l'œuvre concernée. Merci de déposer une nouvelle réclamation avec plus de précisions.</p>
-          </div>
-        </article>
-
-      </div>
+    <div id="claims-container">
+      <p id="claims-feedback" class="feedback-message">Chargement de vos réclamations...</p>
     </div>
   </section>
 
@@ -141,24 +49,103 @@
   <script type="module">
     import { renderHeader, initHeaderEvents } from './src/components/header.js';
     import { renderFooter } from './src/components/footer.js';
+    import { requireAuth } from './src/utils/guard.js';
+    import { AuthService } from './src/services/auth.service.js';
+    import { ClaimsService } from './src/services/claims.service.js';
+
+    if (!requireAuth()) throw new Error('Authentification requise.');
 
     document.getElementById('header-container').innerHTML = renderHeader();
     initHeaderEvents();
 
     document.getElementById('footer-container').innerHTML = renderFooter();
-  </script>
 
-  <script>
-    const statusFilter = document.getElementById('status-filter');
-    const claimsSections = document.querySelectorAll('.claims-section');
+    const statusLabels = {
+      pending: 'En cours',
+      accepted: 'Acceptées',
+      rejected: 'Refusées',
+      invalid: 'Invalides'
+    };
 
-    statusFilter.addEventListener('change', () => {
-      const selected = statusFilter.value;
+    function getStatusKey(status) {
+      const normalizedStatus = status.toLowerCase();
+      if (normalizedStatus.includes('accept')) return 'accepted';
+      if (normalizedStatus.includes('refus')) return 'rejected';
+      if (normalizedStatus.includes('invalid')) return 'invalid';
+      return 'pending';
+    }
 
-      claimsSections.forEach((section) => {
-        section.hidden = selected !== 'all' && section.dataset.status !== selected;
+    function renderClaim(claim) {
+      const statusKey = getStatusKey(claim.status || '');
+      const article = document.createElement('article');
+      article.className = 'claim-card';
+      article.dataset.status = statusKey;
+
+      const role = claim.character_role
+        ? `<span class="claim-tag">${claim.character_role}</span>`
+        : '';
+      const response = claim.response
+        ? `<div class="claim-justification"><p class="claim-justification-label">Réponse</p><p class="claim-justification-text"></p></div>`
+        : '';
+
+      article.innerHTML = `
+        <div class="claim-card-header">
+          <h3></h3>
+          <span class="status-badge status-${statusKey}">${statusLabels[statusKey]}</span>
+        </div>
+        <div class="claim-tags">${role}</div>
+        <p class="claim-ref">Réf. ${claim.id}</p>
+        ${response}
+      `;
+      article.querySelector('h3').textContent = claim.name;
+      if (claim.response) article.querySelector('.claim-justification-text').textContent = claim.response;
+      return article;
+    }
+
+    function renderClaims(claims) {
+      const container = document.getElementById('claims-container');
+      container.innerHTML = '';
+
+      const groupedClaims = { pending: [], accepted: [], rejected: [], invalid: [] };
+      claims.forEach(claim => groupedClaims[getStatusKey(claim.status)].push(claim));
+
+      Object.entries(groupedClaims).forEach(([statusKey, statusClaims]) => {
+        const section = document.createElement('div');
+        section.className = 'claims-section';
+        section.dataset.status = statusKey;
+        section.innerHTML = `<h2>${statusLabels[statusKey]}</h2><div class="claims-list"></div>`;
+        const list = section.querySelector('.claims-list');
+
+        if (statusClaims.length === 0) {
+          list.innerHTML = '<p class="claims-empty">Aucune réclamation dans cette catégorie.</p>';
+        } else {
+          statusClaims.forEach(claim => list.appendChild(renderClaim(claim)));
+        }
+        container.appendChild(section);
+      });
+    }
+
+    async function loadSpace() {
+      const profile = await AuthService.getProfile();
+      if (profile) {
+        document.getElementById('profile-name').textContent = `${profile.name || ''} ${profile.surname || ''}`.trim() || 'Mon espace';
+        document.getElementById('profile-subtitle').textContent = profile.character_role || 'Personnage connecté';
+      }
+
+      try {
+        renderClaims(await ClaimsService.getUserClaims());
+      } catch (error) {
+        document.getElementById('claims-feedback').textContent = error.message;
+      }
+    }
+
+    document.getElementById('status-filter').addEventListener('change', (event) => {
+      document.querySelectorAll('.claims-section').forEach(section => {
+        section.hidden = event.target.value !== 'all' && section.dataset.status !== event.target.value;
       });
     });
+
+    loadSpace();
   </script>
 
 </body>
