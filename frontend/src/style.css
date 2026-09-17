@@ -127,6 +127,11 @@ html, body {
   text-align: center;
 }
 
+.hero--tight {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
 /* Page de confirmation */
 .confirmation-icon {
   width: 64px;
@@ -179,23 +184,29 @@ html, body {
 }
 
 /* Formulaire de réclamation */
-.claim-form {
-  max-width: 600px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  margin: 10px auto 0;
+.hero-text--wide {
+  max-width: 900px;
 }
 
-.claim-form .form-group {
-  width: 100%;
+.form-intro {
+  text-align: left;
+}
+
+.claim-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 40px;
+  margin-top: 10px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.form-group--full {
+  grid-column: 1 / -1;
 }
 
 .form-group label,
@@ -206,6 +217,7 @@ html, body {
 }
 
 .form-group input[type="text"],
+.form-group select,
 .form-group textarea {
   font-family: 'Segoe UI', Arial, sans-serif;
   font-size: 15px;
@@ -217,7 +229,12 @@ html, body {
   resize: vertical;
 }
 
+.form-group select {
+  cursor: pointer;
+}
+
 .form-group input[type="text"]:focus,
+.form-group select:focus,
 .form-group textarea:focus {
   outline: none;
   border-color: #4a6fa5;
@@ -226,7 +243,6 @@ html, body {
 .tags-select {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 12px 20px;
 }
 
@@ -243,10 +259,21 @@ html, body {
   accent-color: #204263;
 }
 
+.form-actions {
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
 .claim-form .btn-primary {
   border: none;
   cursor: pointer;
   font-family: inherit;
+}
+
+@media (max-width: 640px) {
+  .claim-form {
+    grid-template-columns: 1fr;
+  }
 }
  
 /* Mon espace / suivi des réclamations */
@@ -294,6 +321,35 @@ html, body {
 .profile-description {
   font-size: 15px;
   color: #333;
+  margin-bottom: 24px;
+}
+
+.claims-filter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.claims-filter label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #204263;
+}
+
+.claims-filter select {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 14px;
+  color: #111;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.claims-filter select:focus {
+  outline: none;
+  border-color: #4a6fa5;
 }
 
 .claims-section {
