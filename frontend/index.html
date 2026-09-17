@@ -2,67 +2,20 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BRPF - Accueil</title>
-  <link rel="stylesheet" href="./src/style.css">
+  <title>BRPF - Redirection...</title>
+  <script type="module">
+    import { AuthService } from './src/services/auth.service.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (AuthService.isAuthenticated()) {
+        window.location.href = 'home.html';
+      } else {
+        window.location.href = 'login.html';
+      }
+    });
+  </script>
 </head>
 <body>
-
-  <!-- Header -->
-  <header class="header">
-  <a href="index.html">
-    <img src="./src/assets/logo.svg" alt="Logo BRPF" class="logo">
-  </a>
-  <nav class="nav">
-    <a href="index.html" class="nav-link">Accueil</a>
-    <a href="mon-espace.html" class="nav-link">Mon espace</a>
-  </nav>
-</header>
-
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-text">
-      <h1>Un scénario injuste ?<br>Déposez votre réclamation.</h1>
-      <p>
-        Le BRPF recueille les réclamations des personnages de films, jeux et contes afin de défendre des univers plus justes. Parce que la créativité ne justifie pas tout, votre histoire mérite d’être entendue.
-      </p>
-      <a href="formulaire.html" class="btn-primary">Déposer une réclamation</a>
-    </div>
-    <div class="hero-image">
-      <img src="./src/assets/mascotte.svg" alt="Mascotte BRPF"> 
-    </div>
-  </section>
-
-  
-  <!-- Accès rapides -->
-   <!-- Accès rapides -->
-<section class="quick-access">
-  <h2>ACCÈS RAPIDES</h2>
-  <div class="cards" id="cards-container"></div>
-</section>
-  <!-- <section class="quick-access">
-    <h2>ACCÈS RAPIDES</h2>
-    <div class="cards"></div>
-    <div class="cards">
-
-    <a href="declarer-reclamation.html" class="card">
-      <h3>Nouvelle réclamation</h3>
-      <p>Déposer une demande pour contester votre scénario.</p>
-    </a>
-
-    <a href="mes-reclamations.html" class="card">
-      <h3>Mes réclamations</h3>
-      <p>Suivre l’avancement de vos dossiers en cours.</p>
-    </a>
-
-    <a href="#" class="card">
-      <h3>Aide & procédure</h3>
-      <p>Comprendre les étapes, délais et pièces à fournir.</p>
-    </a>
-
-  </div>
-  </section> -->
-
-
+  <p>Redirection en cours...</p>
 </body>
 </html>

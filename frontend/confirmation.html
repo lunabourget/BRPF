@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BRPF - Réclamation envoyée</title>
+  <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+  <a href="index.html">
+    <img src="./src/assets/logo.svg" alt="Logo BRPF" class="logo">
+  </a>
+  <nav class="nav">
+    <a href="index.html" class="nav-link">Accueil</a>
+    <a href="mon-espace.html" class="nav-link">Mon espace</a>
+    <a href="connexion.html" class="btn-login">Se connecter</a>
+  </nav>
+</header>
+
+  <!-- Hero -->
+  <section class="hero hero--center">
+    <div class="hero-text">
+      <div class="confirmation-icon" aria-hidden="true">&#10003;</div>
+      <h1>Réclamation envoyée !</h1>
+      <p>
+        Votre réclamation a bien été enregistrée. Notre équipe va l'étudier avec sérieux, respect et cohérence.
+      </p>
+
+      <div class="confirmation-ref" id="confirmation-ref" hidden>
+        <p class="confirmation-ref-label">Numéro de suivi</p>
+        <p class="confirmation-ref-value" id="confirmation-ref-value"></p>
+        <p class="confirmation-ref-character" id="confirmation-ref-character" hidden></p>
+      </div>
+
+      <div class="confirmation-actions">
+        <a href="mon-espace.html" class="btn-primary">Voir mes réclamations</a>
+        <a href="index.html" class="btn-secondary">Retour à l'accueil</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get('ref');
+    const character = params.get('name');
+
+    if (!ref) {
+      window.location.href = 'formulaire.html';
+    } else {
+      document.getElementById('confirmation-ref').hidden = false;
+      document.getElementById('confirmation-ref-value').textContent = '#' + ref;
+
+      if (character) {
+        const characterEl = document.getElementById('confirmation-ref-character');
+        characterEl.textContent = 'Personnage : ' + character;
+        characterEl.hidden = false;
+      }
+    }
+  </script>
+
+</body>
+</html>

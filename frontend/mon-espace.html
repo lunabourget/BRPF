@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BRPF - Mon espace</title>
+  <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+  <a href="index.html">
+    <img src="./src/assets/logo.svg" alt="Logo BRPF" class="logo">
+  </a>
+  <nav class="nav">
+    <a href="index.html" class="nav-link">Accueil</a>
+    <a href="mon-espace.html" class="nav-link">Mon espace</a>
+    <a href="connexion.html" class="btn-login">Se connecter</a>
+  </nav>
+</header>
+
+  <!-- Profil -->
+  <section class="profile">
+    <div class="profile-header">
+      <div class="profile-identity">
+        <div class="profile-avatar">
+          <img src="./src/assets/avatar-placeholder.svg" alt="Avatar du personnage connecté">
+        </div>
+        <div>
+          <h1>Cendrillon</h1>
+          <p class="profile-subtitle">Personnage connecté</p>
+        </div>
+      </div>
+      <p class="profile-description">Retrouvez ici le suivi de toutes vos réclamations, triées par statut.</p>
+    </div>
+
+    <div class="claims-section">
+      <h2>En cours</h2>
+      <div class="claims-list">
+
+        <article class="claim-card">
+          <div class="claim-card-header">
+            <h3>Cendrillon (1950)</h3>
+            <span class="status-badge status-pending">En cours</span>
+          </div>
+          <div class="claim-tags">
+            <span class="claim-tag">Injustice</span>
+            <span class="claim-tag">Fin injuste</span>
+          </div>
+          <p class="claim-ref">Réf. #482913</p>
+        </article>
+
+        <article class="claim-card">
+          <div class="claim-card-header">
+            <h3>Cendrillon 2 : Une vie de princesse (2002)</h3>
+            <span class="status-badge status-pending">En cours</span>
+          </div>
+          <div class="claim-tags">
+            <span class="claim-tag">Stéréotype</span>
+          </div>
+          <p class="claim-ref">Réf. #479204</p>
+        </article>
+
+      </div>
+    </div>
+
+    <div class="claims-section">
+      <h2>Acceptées</h2>
+      <div class="claims-list">
+
+        <article class="claim-card">
+          <div class="claim-card-header">
+            <h3>Cendrillon (2015, film)</h3>
+            <span class="status-badge status-accepted">Acceptée</span>
+          </div>
+          <div class="claim-tags">
+            <span class="claim-tag">Sous-exploité(e)</span>
+          </div>
+          <p class="claim-ref">Réf. #461027</p>
+          <div class="claim-justification">
+            <p class="claim-justification-label">Justification</p>
+            <p class="claim-justification-text">Le comité reconnaît que le personnage manque de profondeur dans cette adaptation. Réclamation validée.</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <div class="claims-section">
+      <h2>Refusées</h2>
+      <div class="claims-list">
+
+        <article class="claim-card">
+          <div class="claim-card-header">
+            <h3>Cendrillon 3 : Le Sortilège du temps (2007)</h3>
+            <span class="status-badge status-rejected">Refusée</span>
+          </div>
+          <div class="claim-tags">
+            <span class="claim-tag">Incohérence</span>
+          </div>
+          <p class="claim-ref">Réf. #455812</p>
+          <div class="claim-justification">
+            <p class="claim-justification-label">Justification</p>
+            <p class="claim-justification-text">Le rebondissement scénaristique est cohérent avec l'univers de l'œuvre. Réclamation rejetée.</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <div class="claims-section">
+      <h2>Invalides</h2>
+      <div class="claims-list">
+
+        <article class="claim-card">
+          <div class="claim-card-header">
+            <h3>Cendrillon (conte, Charles Perrault)</h3>
+            <span class="status-badge status-invalid">Invalide</span>
+          </div>
+          <div class="claim-tags">
+            <span class="claim-tag">Mort injustifiée</span>
+          </div>
+          <p class="claim-ref">Réf. #450193</p>
+          <div class="claim-justification">
+            <p class="claim-justification-label">Justification</p>
+            <p class="claim-justification-text">La description ne correspond à aucun événement de l'œuvre concernée. Merci de déposer une nouvelle réclamation avec plus de précisions.</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
