@@ -20,8 +20,13 @@
 
         <form class="claim-form" action="#" method="post">
           <div class="form-group">
-            <label for="character-name">Nom du personnage <span class="required">*</span></label>
+            <label for="character-name">Nom<span class="required">*</span></label>
             <input type="text" id="character-name" name="character-name" placeholder="Ex : Cendrillon" required>
+          </div>
+
+          <div class="form-group">
+            <label for="character-first-name">Prénom<span class="required">*</span></label>
+            <input type="text" id="character-first-name" name="character-first-name" placeholder="Ex : Cendrillon" required>
           </div>
 
           <div class="form-group">
@@ -99,9 +104,7 @@
     const roleSelect = document.getElementById('id_character_role');
     async function loadRoles() {
       try {
-        const res = await fetch('/api/roles');
-        if (!res.ok) return;
-        const roles = await res.json();
+        const roles = await AuthService.getRoles();
         roles.forEach(role => {
           const opt = document.createElement('option');
           opt.value = role.id;
@@ -120,9 +123,8 @@
         const profile = await AuthService.getProfile();
         if (!profile) return;
 
-        if (profile.name) {
-          document.getElementById('character-name').value = `${profile.name} ${profile.surname || ''}`.trim();
-        }
+        if (profile.name) document.getElementById('character-first-name').value = profile.name;
+        if (profile.surname) document.getElementById('character-name').value = profile.surname;
         if (profile.fictive_work) {
           document.getElementById('work').value = profile.fictive_work;
         }
@@ -152,7 +154,8 @@
         .map(cb => cb.value);
 
       const formData = {
-        characterName: document.getElementById('character-name').value.trim(),
+        characterFirstName: document.getElementById('character-first-name').value.trim(),
+        characterLastName: document.getElementById('character-name').value.trim(),
         work: document.getElementById('work').value.trim(),
         workYear: workDateSelect.value,
         id_character_role: roleSelect.value,
@@ -166,7 +169,7 @@
         const response = await ClaimsService.createClaim(formData);
         const params = new URLSearchParams({
           ref: response.claim.id,
-          name: formData.characterName,
+          name: `${formData.characterFirstName} ${formData.characterLastName}`.trim(),
           work: formData.work
         });
 

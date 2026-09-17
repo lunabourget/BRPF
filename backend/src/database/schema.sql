@@ -41,11 +41,13 @@ CREATE TABLE IF NOT EXISTS claims (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
     id_user TEXT NOT NULL,
+    id_character_role TEXT,
     id_status TEXT NOT NULL,
     id_category TEXT,
     nb_refus INTEGER DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_user) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_character_role) REFERENCES character_roles(id) ON DELETE SET NULL,
     FOREIGN KEY (id_status) REFERENCES status(id) ON DELETE CASCADE,
     FOREIGN KEY (id_category) REFERENCES categories(id) ON DELETE CASCADE
 );

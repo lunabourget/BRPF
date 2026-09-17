@@ -4,17 +4,18 @@ export const ClaimsService = {
 
   async createClaim(formData) {
     const token = AuthService.getToken();
-    const user = AuthService.getUser();
+    const user = await AuthService.getProfile();
 
     if (!token || !user) {
       throw new Error('Vous devez être connecté pour envoyer une réclamation.');
     }
 
-    const formattedName = `${formData.characterName} - ${formData.work} (${formData.workYear})`;
+    const formattedName = `${formData.characterFirstName} ${formData.characterLastName} - ${formData.work} (${formData.workYear})`.trim();
 
     const claimPayload = {
       name: formattedName,
       id_user: user.id,
+      id_character_role: formData.id_character_role,
       id_status: formData.id_status || 'stat-1',
       id_category: formData.id_category || 'cat-0'
     };

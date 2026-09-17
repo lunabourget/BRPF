@@ -46,6 +46,7 @@ export class UserRepository {
         u.email, 
         u.fictive_work, 
         u.year, 
+        u.id_character_role,
         u.author,
         r.name AS character_role,
         m.name AS media

@@ -10,14 +10,16 @@ export class ClaimRepository {
       SELECT 
         c.id, 
         c.name, 
+        cr.name AS character_role,
         c.nb_refus,
         s.name AS status,
         cat.name AS category,
-        r.text AS response
+        resp.text AS response
       FROM claims c
       JOIN status s ON c.id_status = s.id
       JOIN categories cat ON c.id_category = cat.id
-      LEFT JOIN responses r ON r.id_claim = c.id
+      LEFT JOIN character_roles cr ON c.id_character_role = cr.id
+      LEFT JOIN responses resp ON resp.id_claim = c.id
       WHERE c.id_user = ?
     `);
     return stmt.all(userId);
@@ -30,21 +32,22 @@ export class ClaimRepository {
   }
 
   // Créer une nouvelle réclamation
-  create(claimData: { name: string; id_user: string; id_status: string; id_category: string }): ClaimEntity {
+  create(claimData: { name: string; id_user: string; id_character_role?: string; id_status: string; id_category: string }): ClaimEntity {
     const id = randomUUID();
     const stmt = db.prepare(`
-      INSERT INTO claims (id, name, id_user, id_status, id_category, nb_refus)
-      VALUES (?, ?, ?, ?, ?, 0)
+      INSERT INTO claims (id, name, id_user, id_character_role, id_status, id_category, nb_refus)
+      VALUES (?, ?, ?, ?, ?, ?, 0)
     `);
 
     const categoryId = claimData.id_category ?? null;
 
-    stmt.run(id, claimData.name, claimData.id_user, claimData.id_status, categoryId);
+    stmt.run(id, claimData.name, claimData.id_user, claimData.id_character_role || null, claimData.id_status, categoryId);
 
     return {
     id,
     name: claimData.name,
     id_user: claimData.id_user,
+    ...(claimData.id_character_role ? { id_character_role: claimData.id_character_role } : {}),
     id_status: claimData.id_status,
     id_category: categoryId,
     nb_refus: 0

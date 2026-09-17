@@ -13,5 +13,9 @@ export function initDb(): void {
   const schemaPath = path.resolve(__dirname, '../database/schema.sql');
   const schemaSql = fs.readFileSync(schemaPath, 'utf-8');
   db.exec(schemaSql);
+  const claimColumns = db.prepare('PRAGMA table_info(claims)').all() as Array<{ name: string }>;
+  if (!claimColumns.some(column => column.name === 'id_character_role')) {
+    db.exec('ALTER TABLE claims ADD COLUMN id_character_role TEXT REFERENCES character_roles(id) ON DELETE SET NULL');
+  }
   console.log('Database initialized successfully.');
 }
