@@ -29,11 +29,19 @@
         Votre réclamation a bien été enregistrée. Notre équipe va l'étudier avec sérieux, respect et cohérence.
       </p>
 
-      <div class="confirmation-ref" id="confirmation-ref" hidden>
-        <p class="confirmation-ref-label">Numéro de suivi</p>
-        <p class="confirmation-ref-value" id="confirmation-ref-value"></p>
-        <p class="confirmation-ref-character" id="confirmation-ref-character" hidden></p>
-      </div>
+      <article class="claim-card confirmation-summary" id="confirmation-summary" hidden>
+        <div class="claim-card-header">
+          <h3 id="confirmation-work"></h3>
+          <span class="status-badge status-pending">En cours</span>
+        </div>
+        <p class="confirmation-character" id="confirmation-character"></p>
+        <div class="claim-tags" id="confirmation-tags"></div>
+        <p class="claim-ref" id="confirmation-ref-value"></p>
+        <div class="claim-justification" id="confirmation-description-block">
+          <p class="claim-justification-label">Description de la réclamation</p>
+          <p class="claim-justification-text" id="confirmation-description"></p>
+        </div>
+      </article>
 
       <div class="confirmation-actions">
         <a href="mon-espace.html" class="btn-primary">Voir mes réclamations</a>
@@ -42,21 +50,79 @@
     </div>
   </section>
 
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="home.html">
+          <img src="./src/assets/logo.svg" alt="Logo BRPF" class="logo">
+        </a>
+        <p class="footer-tagline">Bureau des Réclamations des Personnages Fictifs</p>
+      </div>
+
+      <div class="footer-info">
+        <p>Ce site est géré par le Bureau des Réclamations des Personnages Fictifs (BRPF).</p>
+        <nav class="footer-nav">
+          <a href="home.html" class="footer-link">Accueil</a>
+          <a href="mon-espace.html" class="footer-link">Mon espace</a>
+          <a href="formulaire.html" class="footer-link">Déposer une réclamation</a>
+        </nav>
+      </div>
+    </div>
+
+    <hr class="footer-divider">
+
+    <nav class="footer-links">
+      <a href="#" class="footer-secondary-link">Mentions légales</a>
+      <a href="#" class="footer-secondary-link">Données personnelles</a>
+      <a href="#" class="footer-secondary-link">Gestion des cookies</a>
+      <a href="#" class="footer-secondary-link">Aide &amp; procédure</a>
+    </nav>
+
+    <p class="footer-copyright">&copy; 2026 BRPF - Bureau des Réclamations des Personnages Fictifs. Tous droits réservés.</p>
+  </footer>
+
   <script>
     const params = new URLSearchParams(window.location.search);
     const ref = params.get('ref');
     const character = params.get('name');
+    const work = params.get('work');
+    const year = params.get('year');
+    const tags = params.get('tags');
+    const description = params.get('description');
 
     if (!ref) {
       window.location.href = 'formulaire.html';
     } else {
-      document.getElementById('confirmation-ref').hidden = false;
-      document.getElementById('confirmation-ref-value').textContent = '#' + ref;
+      document.getElementById('confirmation-summary').hidden = false;
+      document.getElementById('confirmation-work').textContent = work
+        ? work + (year ? ' (' + year + ')' : '')
+        : 'Œuvre non précisée';
 
+      const characterEl = document.getElementById('confirmation-character');
       if (character) {
-        const characterEl = document.getElementById('confirmation-ref-character');
         characterEl.textContent = 'Personnage : ' + character;
-        characterEl.hidden = false;
+      } else {
+        characterEl.hidden = true;
+      }
+
+      document.getElementById('confirmation-ref-value').textContent = 'Réf. #' + ref;
+
+      const tagsContainer = document.getElementById('confirmation-tags');
+      if (tags) {
+        tags.split(',').forEach((tag) => {
+          const span = document.createElement('span');
+          span.className = 'claim-tag';
+          span.textContent = tag;
+          tagsContainer.appendChild(span);
+        });
+      }
+
+      const descriptionBlock = document.getElementById('confirmation-description-block');
+      if (description) {
+        document.getElementById('confirmation-description').textContent = description;
+      } else {
+        descriptionBlock.hidden = true;
       }
     }
   </script>
