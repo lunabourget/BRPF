@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Connexion - BRPF</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="header-container"></div>
+
+  <main class="auth-container">
+    <h1>Connexion</h1>
+    <p id="error-message" class="error"></p>
+
+    <form id="login-form">
+      <div class="form-group">
+        <label for="email">Adresse email :</label>
+        <input type="email" id="email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mot de passe :</label>
+        <input type="password" id="password" required>
+      </div>
+
+      <button type="submit">Se connecter</button>
+    </form>
+  </main>
+
+  <script type="module" src="src/js/login.js"></script>
+</body>
+</html>
