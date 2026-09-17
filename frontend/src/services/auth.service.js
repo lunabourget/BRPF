@@ -1,4 +1,3 @@
-// Remplace par ton URL Render en production
 export const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? 'http://localhost:3000/api'
   : 'https://brpf.onrender.com/api';
@@ -22,10 +21,23 @@ export const AuthService = {
   },
 
   async register(userData) {
+    // Normalisation des champs pour le repository + gestion des nullables
+    const payload = {
+      name: userData.firstName || userData.name || null,
+      surname: userData.lastName || userData.surname || null,
+      email: userData.email,
+      password: userData.password,
+      fictive_work: userData.workOrigin || userData.fictive_work || null,
+      year: userData.year ? Number(userData.year) : null,
+      id_character_role: userData.role || userData.id_character_role || null,
+      id_media: userData.id_media || null,
+      author: userData.author || null
+    };
+
     const response = await fetch(`${API_URL}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData)
+      body: JSON.stringify(payload)
     });
 
     const data = await response.json();
@@ -37,7 +49,7 @@ export const AuthService = {
     try {
       const response = await fetch(`${API_URL}/roles`);
       if (!response.ok) return [];
-      return await response.json(); // Renvoie un tableau d'objets [{ id, name }, ...]
+      return await response.json();
     } catch (err) {
       console.error('Erreur lors de la récupération des rôles :', err);
       return [];
@@ -57,7 +69,7 @@ export const AuthService = {
     });
 
     if (!response.ok) {
-      this.logout(); // Si le token est expiré ou invalide, on nettoie la session
+      this.logout();
       return null;
     }
 
@@ -76,15 +88,14 @@ export const AuthService = {
   isAuthenticated() {
     return Boolean(this.getToken());
   },
-  
+
   isLoggedIn() {
     const token = this.getToken();
-    const user = this.getUser();
+    const user = this.getUser ? this.getUser() : null;
     
     const status = Boolean(token && user);
     console.log(`[Auth Check] Connecté : ${status}`, status ? user : '');
     
     return status;
   }
-  
 };
