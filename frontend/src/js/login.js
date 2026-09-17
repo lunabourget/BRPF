@@ -1,6 +1,5 @@
 import { AuthService } from '../services/auth.service.js';
-import Navbar, { renderNavbar, initNavbarEvents } from '../components/navbar.js';
-
+import Navbar from '../components/navbar.js';
 
 // Utilisation :
 headerContainer.innerHTML = Navbar.renderNavbar();
