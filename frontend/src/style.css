@@ -36,6 +36,20 @@ html, body {
   color: #4a6fa5;
 }
 
+.btn-login {
+  display: inline-block;
+  background-color: #204263;
+  color: #fff;
+  padding: 10px 20px;
+  text-decoration: none;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+.btn-login:hover {
+  background-color: #333;
+}
+
 /* Hero */
 .hero {
   display: flex;
