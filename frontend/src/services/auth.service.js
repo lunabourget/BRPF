@@ -75,7 +75,16 @@ export const AuthService = {
 
   isAuthenticated() {
     return Boolean(this.getToken());
+  },
+  
+  isLoggedIn() {
+    const token = this.getToken();
+    const user = this.getUser();
+    
+    const status = Boolean(token && user);
+    console.log(`[Auth Check] Connecté : ${status}`, status ? user : '');
+    
+    return status;
   }
-
   
 };

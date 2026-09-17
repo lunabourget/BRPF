@@ -4,21 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BRPF - Accueil</title>
+  <link rel="icon" href="./src/assets/favicon.svg">
   <link rel="stylesheet" href="./src/style.css">
 </head>
 <body>
 
-  <!-- Header -->
-  <header class="header">
-  <a href="home.html">
-    <img src="./src/assets/logo.svg" alt="Logo BRPF" class="logo">
-  </a>
-  <nav class="nav">
-    <a href="home.html" class="nav-link">Accueil</a>
-    <a href="mon-espace.html" class="nav-link">Mon espace</a>
-    <a href="login.html" class="btn-login">Se connecter</a>
-  </nav>
-</header>
+  <!-- Header (rempli par src/components/header.js) -->
+  <div id="header-container"></div>
 
   <!-- Hero -->
   <section class="hero">
@@ -58,37 +50,18 @@
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <a href="home.html">
-          <img src="./src/assets/logo.svg" alt="Logo BRPF" class="logo">
-        </a>
-        <p class="footer-tagline">Bureau des Réclamations des Personnages Fictifs</p>
-      </div>
+  <!-- Footer (rempli par src/components/footer.js) -->
+  <div id="footer-container"></div>
 
-      <div class="footer-info">
-        <p>Ce site est géré par le Bureau des Réclamations des Personnages Fictifs (BRPF).</p>
-        <nav class="footer-nav">
-          <a href="home.html" class="footer-link">Accueil</a>
-          <a href="mon-espace.html" class="footer-link">Mon espace</a>
-          <a href="formulaire.html" class="footer-link">Déposer une réclamation</a>
-        </nav>
-      </div>
-    </div>
+  <script type="module">
+    import { renderHeader, initHeaderEvents } from './src/components/header.js';
+    import { renderFooter } from './src/components/footer.js';
 
-    <hr class="footer-divider">
+    document.getElementById('header-container').innerHTML = renderHeader();
+    initHeaderEvents();
 
-    <nav class="footer-links">
-      <a href="#" class="footer-secondary-link">Mentions légales</a>
-      <a href="#" class="footer-secondary-link">Données personnelles</a>
-      <a href="#" class="footer-secondary-link">Gestion des cookies</a>
-      <a href="#" class="footer-secondary-link">Aide &amp; procédure</a>
-    </nav>
-
-    <p class="footer-copyright">&copy; 2026 BRPF - Bureau des Réclamations des Personnages Fictifs. Tous droits réservés.</p>
-  </footer>
+    document.getElementById('footer-container').innerHTML = renderFooter();
+  </script>
 
 </body>
 </html>
