@@ -1,6 +1,10 @@
 import { AuthService } from '../services/auth.service.js';
 import { renderNavbar, initNavbarEvents } from '../components/navbar.js';
+import Navbar from '../components/navbar.js';
 
+// Utilisation :
+headerContainer.innerHTML = Navbar.renderNavbar();
+Navbar.initNavbarEvents();
 document.addEventListener('DOMContentLoaded', () => {
   console.log('🚀 login.js chargé avec succès !');
 
