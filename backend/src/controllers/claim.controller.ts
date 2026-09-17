@@ -33,7 +33,7 @@ export class ClaimController {
         // const userId = (req as any).user?.id; 
         
         // Sinon, on accepte id_user directement transmis du body
-        const { name, description, id_user, id_character_role, id_category, id_status } = req.body;
+        const { name, id_user, id_character_role, id_category, id_status } = req.body;
 
         // ID du statut par défaut si non transmis par le front (ex: 'statut-en-cours-id')
         const DEFAULT_STATUS_ID = id_status || 'STATUS_PENDING_UUID'; 
@@ -52,7 +52,6 @@ export class ClaimController {
 
         const newClaim = this.claimRepository.create({ 
         name, 
-        description,
         id_user, 
         id_character_role,
         id_status: DEFAULT_STATUS_ID, 

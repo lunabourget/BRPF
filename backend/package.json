@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/app.ts",
-    "build": "tsc && mkdir -p dist/database && cp src/database/schema.sql dist/database/schema.sql",
+    "build": "tsc && node --input-type=module -e \"import fs from 'node:fs'; fs.mkdirSync('dist/database', { recursive: true }); fs.copyFileSync('src/database/schema.sql', 'dist/database/schema.sql');\"",
+    "seed:demo": "node dist/scripts/seed-demo.js",
+    "build:demo": "npm run build && npm run seed:demo",
     "start": "node dist/app.js"
   },
   "keywords": [],

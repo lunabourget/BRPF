@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { UserRepository } from '../repositories/user.repository.js';
 import type { AuthenticatedRequest } from '../middlewares/auth.middleware.js';
+import type { UserEntity } from '../interfaces/user.interface.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'brpf_secret_key_change_in_prod';
 
@@ -18,7 +19,7 @@ export class AuthController {
     try {
       const { name, surname, email, password, fictive_work, year, id_character_role, id_media, author } = req.body;
 
-      if (typeof email !== 'string' || typeof password !== 'string' || typeof name !== 'string' || typeof surname !== 'string') {
+      if (typeof email !== 'string' || typeof password !== 'string' || typeof name !== 'string' || !name.trim()) {
         res.status(400).json({ error: 'Champs obligatoires manquants ou invalides.' });
         return;
       }
@@ -33,9 +34,8 @@ export class AuthController {
 
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      this.userRepository.create({
+      const userData: Omit<UserEntity, 'id'> = {
         name,
-        surname,
         email: cleanEmail,
         password: hashedPassword,
         fictive_work,
@@ -43,7 +43,10 @@ export class AuthController {
         id_character_role,
         id_media,
         author
-      });
+      };
+      if (typeof surname === 'string' && surname.trim()) userData.surname = surname.trim();
+
+      this.userRepository.create(userData);
 
       // Ne renvoie aucun champ password au frontend
       res.status(201).json({ 
