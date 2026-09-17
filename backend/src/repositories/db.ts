@@ -20,6 +20,9 @@ export function initDb(): void {
   if (!claimColumns.some(column => column.name === 'description')) {
     db.exec('ALTER TABLE claims ADD COLUMN description TEXT');
   }
+<<<<<<< HEAD
   db.exec("UPDATE claims SET name = description WHERE description IS NOT NULL AND description <> ''");
+=======
+>>>>>>> 796c27f (add description in claim)
   console.log('Database initialized successfully.');
 }

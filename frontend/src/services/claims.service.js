@@ -35,7 +35,7 @@ export const ClaimsService = {
     const fallbackName = `${formData.characterFirstName} ${formData.characterLastName} - ${formData.work} (${formData.workYear})`.trim();
 
     const claimPayload = {
-      name: formData.description || fallbackName,
+      name: formattedName,
       description: formData.description,
       id_user: user.id,
       id_character_role: formData.id_character_role,

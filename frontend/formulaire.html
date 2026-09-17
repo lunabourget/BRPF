@@ -177,7 +177,7 @@
         const response = await ClaimsService.createClaim(formData);
         const params = new URLSearchParams({
           ref: response.claim.id,
-          name: formData.description,
+          name: `${formData.characterFirstName} ${formData.characterLastName}`.trim(),
           work: formData.work,
           year: formData.workYear,
           description: formData.description

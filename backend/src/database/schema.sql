@@ -103,15 +103,11 @@ INSERT OR IGNORE INTO users (id, name, surname, email, password, fictive_work, y
 
 -- 6. Réclamation de test
 INSERT OR IGNORE INTO claims (id, name, description, id_user, id_status, id_category, nb_refus) VALUES 
-  ('claim-1', 'Je conteste mon expulsion du marais et demande la réévaluation de cette décision.', 'Je conteste mon expulsion du marais et demande la réévaluation de cette décision.', 'user-1', 'stat-3', 'cat-1', 1);
+  ('claim-1', 'Contestation de l expulsion du marais', 'Je conteste mon expulsion du marais et demande la réévaluation de cette décision.', 'user-1', 'stat-3', 'cat-1', 1);
 
 UPDATE claims
 SET description = 'Je conteste mon expulsion du marais et demande la réévaluation de cette décision.'
 WHERE id = 'claim-1' AND description IS NULL;
-
-UPDATE claims
-SET name = description
-WHERE description IS NOT NULL AND description <> '';
 
 -- 7. Réponse associée à la réclamation
 INSERT OR IGNORE INTO responses (id, text, id_claim) VALUES 
