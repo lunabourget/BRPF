@@ -83,9 +83,15 @@ INSERT OR IGNORE INTO medias (id, name) VALUES
 
 -- 4. Rôles
 INSERT OR IGNORE INTO character_roles (id, name) VALUES 
-  ('role-1', 'Héros'),
-  ('role-2', 'Méchant'),
-  ('role-3', 'Secondaire');
+  ('role-1', 'Héros·ïne'),
+  ('role-2', 'Méchant·e'),
+  ('role-3', 'Personnage secondaire'),
+  ('role-4', 'Mentor·e'),
+  ('role-5', 'Acolyte / Faire-valoir'),
+  ('role-6', 'Narrateur·ice'),
+  ('role-7', 'Figurant·e'),
+  ('role-8', 'Autre');
+
 
 -- 5. Utilisateur de test
 INSERT OR IGNORE INTO users (id, name, surname, email, password, fictive_work, year, id_character_role, id_media, author) VALUES 
