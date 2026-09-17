@@ -1,5 +1,8 @@
 // frontend/src/components/navbar.js
-
+export default {
+  renderNavbar,
+  initNavbarEvents
+};
 export function renderNavbar() {
   return `
     <header class="main-header">
