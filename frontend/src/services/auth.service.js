@@ -33,6 +33,17 @@ export const AuthService = {
     return data;
   },
 
+  async getRoles() {
+    try {
+      const response = await fetch(`${API_URL}/roles`);
+      if (!response.ok) return [];
+      return await response.json();
+    } catch (err) {
+      console.error('Erreur chargement rôles:', err);
+      return [];
+    }
+  },
+
   async getProfile() {
     const token = this.getToken();
     if (!token) return null;
@@ -65,4 +76,6 @@ export const AuthService = {
   isAuthenticated() {
     return Boolean(this.getToken());
   }
+
+  
 };
