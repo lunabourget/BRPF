@@ -23,7 +23,9 @@ export class AuthController {
         return;
       }
 
-      const existingUser = this.userRepository.findByEmail(email);
+      const cleanEmail = email.trim().toLowerCase();
+
+      const existingUser = this.userRepository.findByEmail(cleanEmail);
       if (existingUser) {
         res.status(409).json({ error: 'Un utilisateur existe déjà avec cet email.' });
         return;
@@ -31,10 +33,10 @@ export class AuthController {
 
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      const newUser = this.userRepository.create({
+      this.userRepository.create({
         name,
         surname,
-        email,
+        email: cleanEmail,
         password: hashedPassword,
         fictive_work,
         year: year ? Number(year) : undefined,
@@ -43,9 +45,13 @@ export class AuthController {
         author
       });
 
-      const { password: _, ...userWithoutPassword } = newUser;
-      res.status(201).json({ message: 'Inscription réussie', user: userWithoutPassword });
+      // Ne renvoie aucun champ password au frontend
+      res.status(201).json({ 
+        message: 'Inscription réussie',
+        user: { name, surname, email: cleanEmail }
+      });
     } catch (error) {
+      console.error("Erreur register:", error);
       res.status(500).json({ error: "Erreur lors de l'inscription." });
     }
   }
@@ -60,7 +66,9 @@ export class AuthController {
         return;
       }
 
-      const user = this.userRepository.findByEmail(email);
+      const cleanEmail = email.trim().toLowerCase();
+
+      const user = this.userRepository.findByEmail(cleanEmail);
       if (!user || !user.password) {
         res.status(401).json({ error: 'Identifiants incorrects.' });
         return;
@@ -81,11 +89,13 @@ export class AuthController {
       const { password: _, ...userWithoutPassword } = user;
       res.json({ message: 'Connexion réussie', token, user: userWithoutPassword });
     } catch (error) {
+      console.error("Erreur login:", error);
       res.status(500).json({ error: 'Erreur lors de la connexion.' });
     }
   }
-// GET /api/auth/profile
-async getProfile(req: AuthenticatedRequest, res: Response): Promise<void> {
+
+  // GET /api/auth/profile
+  async getProfile(req: AuthenticatedRequest, res: Response): Promise<void> {
     try {
       const userId = req.userId;
 
@@ -109,8 +119,6 @@ async getProfile(req: AuthenticatedRequest, res: Response): Promise<void> {
 
   // POST /api/auth/logout
   async logout(_req: AuthenticatedRequest, res: Response): Promise<void> {
-    // Avec des jetons JWT sans état (stateless), la déconnexion consiste pour le frontend à supprimer le token stocké localement.
-    // Le serveur confirme simplement la demande.
     res.json({ message: 'Déconnexion réussie.' });
   }
 }
