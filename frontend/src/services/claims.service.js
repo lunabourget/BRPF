@@ -32,10 +32,11 @@ export const ClaimsService = {
       throw new Error('Vous devez être connecté pour envoyer une réclamation.');
     }
 
-    const formattedName = `${formData.characterFirstName} ${formData.characterLastName} - ${formData.work} (${formData.workYear})`.trim();
+    const fallbackName = `${formData.characterFirstName} ${formData.characterLastName} - ${formData.work} (${formData.workYear})`.trim();
 
     const claimPayload = {
-      name: formattedName,
+      name: formData.description || fallbackName,
+      description: formData.description,
       id_user: user.id,
       id_character_role: formData.id_character_role,
       id_status: formData.id_status || 'stat-1',

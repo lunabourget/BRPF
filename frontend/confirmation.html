@@ -29,10 +29,6 @@
         <p class="confirmation-character" id="confirmation-character"></p>
         <div class="claim-tags" id="confirmation-tags"></div>
         <p class="claim-ref" id="confirmation-ref-value"></p>
-        <div class="claim-justification" id="confirmation-description-block">
-          <p class="claim-justification-label">Description de la réclamation</p>
-          <p class="claim-justification-text" id="confirmation-description"></p>
-        </div>
       </article>
 
       <div class="confirmation-actions">
@@ -58,7 +54,8 @@
   <script>
     const params = new URLSearchParams(window.location.search);
     const ref = params.get('ref');
-    const character = params.get('name');
+    const claimName = params.get('name');
+    const character = params.get('character');
     const work = params.get('work');
     const year = params.get('year');
     const tags = params.get('tags');
@@ -68,9 +65,7 @@
       window.location.href = 'formulaire.html';
     } else {
       document.getElementById('confirmation-summary').hidden = false;
-      document.getElementById('confirmation-work').textContent = work
-        ? work + (year ? ' (' + year + ')' : '')
-        : 'Œuvre non précisée';
+      document.getElementById('confirmation-work').textContent = claimName || 'Réclamation sans titre';
 
       const characterEl = document.getElementById('confirmation-character');
       if (character) {
@@ -91,12 +86,6 @@
         });
       }
 
-      const descriptionBlock = document.getElementById('confirmation-description-block');
-      if (description) {
-        document.getElementById('confirmation-description').textContent = description;
-      } else {
-        descriptionBlock.hidden = true;
-      }
     }
   </script>
 
