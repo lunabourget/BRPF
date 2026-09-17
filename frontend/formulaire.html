@@ -72,27 +72,99 @@
     </div>
   </section>
 
-  <script>
-    const workDateSelect = document.getElementById('work-date');
-    const currentYear = new Date().getFullYear();
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="home.html">
+          <img src="./src/assets/logo.svg" alt="Logo BRPF" class="logo">
+        </a>
+        <p class="footer-tagline">Bureau des Réclamations des Personnages Fictifs</p>
+      </div>
 
-    for (let year = currentYear; year >= 1900; year--) {
-      const option = document.createElement('option');
-      option.value = year;
-      option.textContent = year;
-      workDateSelect.appendChild(option);
+      <div class="footer-info">
+        <p>Ce site est géré par le Bureau des Réclamations des Personnages Fictifs (BRPF).</p>
+        <nav class="footer-nav">
+          <a href="home.html" class="footer-link">Accueil</a>
+          <a href="mon-espace.html" class="footer-link">Mon espace</a>
+          <a href="formulaire.html" class="footer-link">Déposer une réclamation</a>
+        </nav>
+      </div>
+    </div>
+
+    <hr class="footer-divider">
+
+    <nav class="footer-links">
+      <a href="#" class="footer-secondary-link">Mentions légales</a>
+      <a href="#" class="footer-secondary-link">Données personnelles</a>
+      <a href="#" class="footer-secondary-link">Gestion des cookies</a>
+      <a href="#" class="footer-secondary-link">Aide &amp; procédure</a>
+    </nav>
+
+    <p class="footer-copyright">&copy; 2026 BRPF - Bureau des Réclamations des Personnages Fictifs. Tous droits réservés.</p>
+  </footer>
+
+ <!-- Message de retour pour l'utilisateur -->
+<div id="form-feedback" class="feedback-message" style="display: none;"></div>
+
+<script type="module">
+  import { requireAuth } from './src/utils/guard.js';
+  import { ClaimsService } from './src/services/claims.service.js';
+
+  // Protection de la page
+  requireAuth();
+
+  // Génération années
+  const workDateSelect = document.getElementById('work-date');
+  const currentYear = new Date().getFullYear();
+
+  for (let year = currentYear; year >= 1900; year--) {
+    const option = document.createElement('option');
+    option.value = year;
+    option.textContent = year;
+    workDateSelect.appendChild(option);
+  }
+
+  const form = document.querySelector('.claim-form');
+  const submitBtn = form.querySelector('button[type="submit"]');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Envoi en cours...';
+
+    const checkedTags = Array.from(document.querySelectorAll('.tag-option input[type="checkbox"]:checked'))
+      .map((checkbox) => checkbox.value);
+
+    const formData = {
+      characterName: document.getElementById('character-name').value.trim(),
+      work: document.getElementById('work').value.trim(),
+      workYear: document.getElementById('work-date').value,
+      tags: checkedTags,
+      description: document.getElementById('description').value.trim(),
+      id_category: 'cat-0', 
+      id_status: 'stat-1'
+    };
+
+    try {
+      const response = await ClaimsService.createClaim(formData);
+
+      // Redirection  réponse BDD
+      const params = new URLSearchParams({
+        ref: response.claim.id,
+        name: formData.characterName,
+        work: formData.work
+      });
+
+      window.location.href = `confirmation.html?${params.toString()}`;
+    } catch (error) {
+      alert(error.message);
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Envoyer ma réclamation';
     }
-
-    document.querySelector('.claim-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const characterName = document.getElementById('character-name').value;
-      const ref = Date.now().toString().slice(-6);
-
-      const params = new URLSearchParams({ ref, name: characterName });
-      window.location.href = 'confirmation.html?' + params.toString();
-    });
-  </script>
+  });
+</script>
 
 </body>
 </html>

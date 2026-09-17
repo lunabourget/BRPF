@@ -145,31 +145,16 @@ html, body {
   text-align: center;
 }
 
-.confirmation-ref {
-  background-color: #fff;
-  border: 1px solid #eee;
-  border-radius: 4px;
-  padding: 20px 24px;
+.confirmation-summary {
+  text-align: left;
+  max-width: 480px;
   margin: 0 auto 30px;
-  max-width: 400px;
 }
 
-.confirmation-ref-label {
-  font-size: 13px;
-  color: #666;
-  margin-bottom: 4px;
-}
-
-.confirmation-ref-value {
-  font-size: 20px;
-  font-weight: 700;
-  color: #204263;
-  margin-bottom: 4px;
-}
-
-.confirmation-ref-character {
+.confirmation-character {
   font-size: 14px;
-  color: #333;
+  color: #666;
+  margin-bottom: 12px;
 }
 
 .confirmation-actions {
@@ -501,6 +486,7 @@ html, body {
 .card:hover {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
+/* Page de connexion */
 .auth-wrapper {
   display: flex;
   justify-content: center;
@@ -545,17 +531,17 @@ html, body {
   display: block;
 }
 
-.form-row {
+.auth-form .form-row {
   display: flex;
   gap: 1rem;
 }
 
-.form-group {
+.auth-form .form-group {
   margin-bottom: 1rem;
   flex: 1;
 }
 
-.form-group label {
+.auth-form .form-group label {
   display: block;
   margin-bottom: 0.25rem;
   font-size: 0.9rem;
@@ -582,4 +568,90 @@ html, body {
   display: block;
   background: #e8f5e9;
   color: #2e7d32;
+}
+
+/* Footer */
+.footer {
+  background-color: #FBFBFB;
+  border-top: 1px solid #eee;
+  padding: 40px 60px 24px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-tagline {
+  font-size: 13px;
+  font-style: italic;
+  color: #666;
+  max-width: 220px;
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.footer-info p {
+  font-size: 14px;
+  color: #333;
+}
+
+.footer-nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.footer-link {
+  font-size: 14px;
+  font-weight: 600;
+  color: #204263;
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  color: #4a6fa5;
+}
+
+.footer-divider {
+  border: none;
+  border-top: 1px solid #e2e2e2;
+  margin: 0 0 20px;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin-bottom: 20px;
+}
+
+.footer-secondary-link {
+  font-size: 13px;
+  color: #666;
+  text-decoration: none;
+}
+
+.footer-secondary-link:hover {
+  color: #204263;
+}
+
+.footer-copyright {
+  font-size: 13px;
+  color: #666;
 }

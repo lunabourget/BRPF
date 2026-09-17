@@ -14,3 +14,4 @@ router.post('/', (req, res) => claimController.create(req, res));
 router.post('/:id/contest', (req, res) => claimController.contest(req, res));
 
 export default router;
+

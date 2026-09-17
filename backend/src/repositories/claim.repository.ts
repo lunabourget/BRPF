@@ -37,13 +37,18 @@ export class ClaimRepository {
       VALUES (?, ?, ?, ?, ?, 0)
     `);
 
-    stmt.run(id, claimData.name, claimData.id_user, claimData.id_status, claimData.id_category);
+    const categoryId = claimData.id_category ?? null;
+
+    stmt.run(id, claimData.name, claimData.id_user, claimData.id_status, categoryId);
 
     return {
-      id,
-      ...claimData,
-      nb_refus: 0
-    };
+    id,
+    name: claimData.name,
+    id_user: claimData.id_user,
+    id_status: claimData.id_status,
+    id_category: categoryId,
+    nb_refus: 0
+  };
   }
 
   // Faire opposition (Incrémente nb_refus et remet le statut "En cours")

@@ -25,28 +25,45 @@ export class ClaimController {
     }
   }
 
-  // POST /api/claims
-  async create(req: Request, res: Response): Promise<void> {
+    // POST /api/claims
+    async create(req: Request, res: Response): Promise<void> {
     try {
-      const { name, id_user, id_status, id_category } = req.body;
+        // Si votre middleware JWT attache req.user :
+        // const userId = (req as any).user?.id; 
+        
+        // Sinon, on accepte id_user directement transmis du body
+        const { name, id_user, id_category, id_status } = req.body;
 
-      if (
+        // ID du statut par défaut si non transmis par le front (ex: 'statut-en-cours-id')
+        const DEFAULT_STATUS_ID = id_status || 'STATUS_PENDING_UUID'; 
+        // ID de la catégorie par défaut si non gérée dans le HTML
+        const DEFAULT_CATEGORY_ID = id_category || 'CATEGORY_DEFAULT_UUID';
+
+        if (
         typeof name !== 'string' ||
-        typeof id_user !== 'string' ||
-        typeof id_status !== 'string' ||
-        typeof id_category !== 'string'
-      ) {
-        res.status(400).json({ error: 'Tous les champs obligatoires doivent être renseignés sous forme de texte.' });
+        typeof id_user !== 'string'
+        ) {
+        res.status(400).json({ 
+            error: "Le nom et l'identifiant utilisateur sont obligatoires." 
+        });
         return;
-      }
+        }
 
-      const newClaim = this.claimRepository.create({ name, id_user, id_status, id_category });
-      res.status(201).json({ message: 'Réclamation envoyée avec succès', claim: newClaim });
+        const newClaim = this.claimRepository.create({ 
+        name, 
+        id_user, 
+        id_status: DEFAULT_STATUS_ID, 
+        id_category: DEFAULT_CATEGORY_ID 
+        });
+
+        res.status(201).json({ 
+        message: 'Réclamation envoyée avec succès', 
+        claim: newClaim 
+        });
     } catch (error) {
-      res.status(500).json({ error: "Erreur lors de la création de la réclamation." });
+        res.status(500).json({ error: "Erreur lors de la création de la réclamation." });
     }
-  }
-
+    }
   // POST /api/claims/:id/contest
   async contest(req: Request, res: Response): Promise<void> {
     try {
