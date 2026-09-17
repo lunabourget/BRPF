@@ -57,5 +57,28 @@ export const ClaimsService = {
     }
 
     return data;
+  },
+
+  async contestClaim(claimId) {
+    const token = AuthService.getToken();
+    if (!token) {
+      throw new Error('Vous devez être connecté pour signaler une réclamation.');
+    }
+
+    const response = await fetch(`${API_URL}/claims/${encodeURIComponent(claimId)}/contest`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ inProgressStatusId: 'stat-1' })
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.error || 'Erreur lors du signalement de la réclamation.');
+    }
+
+    return data;
   }
 };

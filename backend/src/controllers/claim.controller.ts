@@ -67,7 +67,7 @@ export class ClaimController {
     }
     }
   // POST /api/claims/:id/contest
-  async contest(req: Request, res: Response): Promise<void> {
+  async contest(req: AuthenticatedRequest, res: Response): Promise<void> {
     try {
       const claimId = req.params.id;
       const { inProgressStatusId } = req.body;
@@ -85,6 +85,11 @@ export class ClaimController {
       const claim = this.claimRepository.findById(claimId);
       if (!claim) {
         res.status(404).json({ error: 'Réclamation introuvable.' });
+        return;
+      }
+
+      if (claim.id_user !== req.userId) {
+        res.status(403).json({ error: 'Vous ne pouvez signaler que vos propres réclamations.' });
         return;
       }
 

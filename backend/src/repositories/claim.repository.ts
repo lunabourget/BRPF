@@ -10,6 +10,7 @@ export class ClaimRepository {
       SELECT 
         c.id, 
         c.name, 
+        c.created_at,
         cr.name AS character_role,
         c.nb_refus,
         s.name AS status,

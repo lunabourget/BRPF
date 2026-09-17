@@ -12,7 +12,7 @@ router.get('/', authenticateToken, (req, res) => claimController.getAllByUser(re
 router.post('/', (req, res) => claimController.create(req, res));
 
 // Faire opposition à un refus
-router.post('/:id/contest', (req, res) => claimController.contest(req, res));
+router.post('/:id/contest', authenticateToken, (req, res) => claimController.contest(req, res));
 
 export default router;
 
