@@ -104,39 +104,67 @@
     <p class="footer-copyright">&copy; 2026 BRPF - Bureau des Réclamations des Personnages Fictifs. Tous droits réservés.</p>
   </footer>
 
-  <script>
-    const workDateSelect = document.getElementById('work-date');
-    const currentYear = new Date().getFullYear();
+ <!-- Message de retour pour l'utilisateur -->
+<div id="form-feedback" class="feedback-message" style="display: none;"></div>
 
-    for (let year = currentYear; year >= 1900; year--) {
-      const option = document.createElement('option');
-      option.value = year;
-      option.textContent = year;
-      workDateSelect.appendChild(option);
-    }
+<script type="module">
+  import { requireAuth } from './src/utils/guard.js';
+  import { ClaimsService } from './src/services/claims.service.js';
 
-    document.querySelector('.claim-form').addEventListener('submit', (e) => {
-      e.preventDefault();
+  // Protection de la page
+  requireAuth();
 
-      const characterName = document.getElementById('character-name').value;
-      const work = document.getElementById('work').value;
-      const year = document.getElementById('work-date').value;
-      const description = document.getElementById('description').value;
-      const checkedTags = Array.from(document.querySelectorAll('.tag-option input[type="checkbox"]:checked'))
-        .map((checkbox) => checkbox.closest('.tag-option').textContent.trim());
-      const ref = Date.now().toString().slice(-6);
+  // Génération années
+  const workDateSelect = document.getElementById('work-date');
+  const currentYear = new Date().getFullYear();
 
+  for (let year = currentYear; year >= 1900; year--) {
+    const option = document.createElement('option');
+    option.value = year;
+    option.textContent = year;
+    workDateSelect.appendChild(option);
+  }
+
+  const form = document.querySelector('.claim-form');
+  const submitBtn = form.querySelector('button[type="submit"]');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Envoi en cours...';
+
+    const checkedTags = Array.from(document.querySelectorAll('.tag-option input[type="checkbox"]:checked'))
+      .map((checkbox) => checkbox.value);
+
+    const formData = {
+      characterName: document.getElementById('character-name').value.trim(),
+      work: document.getElementById('work').value.trim(),
+      workYear: document.getElementById('work-date').value,
+      tags: checkedTags,
+      description: document.getElementById('description').value.trim(),
+      id_category: 'cat-0', 
+      id_status: 'stat-1'
+    };
+
+    try {
+      const response = await ClaimsService.createClaim(formData);
+
+      // Redirection  réponse BDD
       const params = new URLSearchParams({
-        ref,
-        name: characterName,
-        work,
-        year,
-        tags: checkedTags.join(','),
-        description
+        ref: response.claim.id,
+        name: formData.characterName,
+        work: formData.work
       });
-      window.location.href = 'confirmation.html?' + params.toString();
-    });
-  </script>
+
+      window.location.href = `confirmation.html?${params.toString()}`;
+    } catch (error) {
+      alert(error.message);
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Envoyer ma réclamation';
+    }
+  });
+</script>
 
 </body>
 </html>

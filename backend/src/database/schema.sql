@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS claims (
     name TEXT NOT NULL,
     id_user TEXT NOT NULL,
     id_status TEXT NOT NULL,
-    id_category TEXT NOT NULL,
+    id_category TEXT,
     nb_refus INTEGER DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_user) REFERENCES users(id) ON DELETE CASCADE,
@@ -69,6 +69,7 @@ INSERT OR IGNORE INTO status (id, name) VALUES
 
 -- 2. Catégories / Tags
 INSERT OR IGNORE INTO categories (id, name) VALUES 
+  ('cat-0', 'Non catégorisé'),
   ('cat-1', 'Scénario incohérent'),
   ('cat-2', 'Mort injustifiée'),
   ('cat-3', 'Temps d écran insuffisant'),
@@ -97,3 +98,5 @@ INSERT OR IGNORE INTO claims (id, name, id_user, id_status, id_category, nb_refu
 -- 7. Réponse associée à la réclamation
 INSERT OR IGNORE INTO responses (id, text, id_claim) VALUES 
   ('resp-1', 'Réclamation refusée par le SAV : Votre mort apporte de la profondeur dramatique à l œuvre.', 'claim-1');
+
+  ALTER TABLE claims MODIFY id_category TEXT NULL;
