@@ -14,7 +14,7 @@ interface ReferenceItem {
  */
 router.get('/roles', (_req: Request, res: Response) => {
   try {
-    const roles = db.prepare('SELECT id, name FROM character_role').all() as ReferenceItem[];
+    const roles = db.prepare('SELECT id, name FROM character_roles').all() as ReferenceItem[];
     res.json(roles);
   } catch (error) {
     res.status(500).json({ error: 'Erreur lors de la récupération des rôles.' });
