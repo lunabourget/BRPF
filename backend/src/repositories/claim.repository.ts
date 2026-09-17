@@ -10,6 +10,7 @@ export class ClaimRepository {
       SELECT 
         c.id, 
         c.name, 
+        c.description,
         c.created_at,
         cr.name AS character_role,
         c.nb_refus,
@@ -33,20 +34,21 @@ export class ClaimRepository {
   }
 
   // Créer une nouvelle réclamation
-  create(claimData: { name: string; id_user: string; id_character_role?: string; id_status: string; id_category: string }): ClaimEntity {
+  create(claimData: { name: string; description?: string; id_user: string; id_character_role?: string; id_status: string; id_category: string }): ClaimEntity {
     const id = randomUUID();
     const stmt = db.prepare(`
-      INSERT INTO claims (id, name, id_user, id_character_role, id_status, id_category, nb_refus)
-      VALUES (?, ?, ?, ?, ?, ?, 0)
+      INSERT INTO claims (id, name, description, id_user, id_character_role, id_status, id_category, nb_refus)
+      VALUES (?, ?, ?, ?, ?, ?, ?, 0)
     `);
 
     const categoryId = claimData.id_category ?? null;
 
-    stmt.run(id, claimData.name, claimData.id_user, claimData.id_character_role || null, claimData.id_status, categoryId);
+    stmt.run(id, claimData.name, claimData.description || null, claimData.id_user, claimData.id_character_role || null, claimData.id_status, categoryId);
 
     return {
     id,
     name: claimData.name,
+    ...(claimData.description ? { description: claimData.description } : {}),
     id_user: claimData.id_user,
     ...(claimData.id_character_role ? { id_character_role: claimData.id_character_role } : {}),
     id_status: claimData.id_status,

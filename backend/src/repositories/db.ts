@@ -17,5 +17,9 @@ export function initDb(): void {
   if (!claimColumns.some(column => column.name === 'id_character_role')) {
     db.exec('ALTER TABLE claims ADD COLUMN id_character_role TEXT REFERENCES character_roles(id) ON DELETE SET NULL');
   }
+  if (!claimColumns.some(column => column.name === 'description')) {
+    db.exec('ALTER TABLE claims ADD COLUMN description TEXT');
+  }
+  db.exec("UPDATE claims SET name = description WHERE description IS NOT NULL AND description <> ''");
   console.log('Database initialized successfully.');
 }
