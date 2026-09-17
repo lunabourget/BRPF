@@ -3,39 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BRPF - Accueil</title>
+  <title>BRPF - Nouvelle Réclamation</title>
   <link rel="icon" href="./src/assets/favicon.svg">
   <link rel="stylesheet" href="./src/style.css">
 </head>
 <body>
 
-  <!-- Header (rempli par src/components/header.js) -->
   <div id="header-container"></div>
 
-  <!-- Hero -->
   <section class="hero hero--center hero--tight">
     <div class="hero-text hero-text--wide">
       <h1>Formulaire de réclamation</h1>
 
       <div class="form-intro">
-        <p>
-          Expliquez-nous ce qui ne va pas dans votre scénario. Chaque réclamation est étudiée avec sérieux, respect et cohérence.        </p>
+        <p>Expliquez-nous ce qui ne va pas dans votre scénario. Chaque réclamation est étudiée avec sérieux, respect et cohérence.</p>
 
         <form class="claim-form" action="#" method="post">
           <div class="form-group">
-            <label for="character-name">Nom du personnage</label>
+            <label for="character-name">Nom du personnage <span class="required">*</span></label>
             <input type="text" id="character-name" name="character-name" placeholder="Ex : Cendrillon" required>
           </div>
 
           <div class="form-group">
-            <label for="work">Œuvre concernée</label>
-            <input type="text" id="work" name="work" placeholder="Ex : Cendrillon (1950)" required>
+            <label for="work">Œuvre concernée <span class="required">*</span></label>
+            <input type="text" id="work" name="work" placeholder="Ex : Cendrillon" required>
           </div>
 
           <div class="form-group">
-            <label for="work-date">Date de l'œuvre</label>
+            <label for="work-date">Date de l'œuvre <span class="required">*</span></label>
             <select id="work-date" name="work-date" required>
               <option value="" disabled selected>Sélectionnez une année</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="id_character_role">Rôle du personnage <span class="required">*</span></label>
+            <select id="id_character_role" name="id_character_role" required>
+              <option value="" disabled selected>-- Sélectionnez un rôle --</option>
             </select>
           </div>
 
@@ -52,7 +56,7 @@
           </div>
 
           <div class="form-group form-group--full">
-            <label for="description">Description de la réclamation</label>
+            <label for="description">Description de la réclamation <span class="required">*</span></label>
             <textarea id="description" name="description" rows="6" placeholder="Décrivez ce qui ne va pas dans votre scénario..." required></textarea>
           </div>
 
@@ -64,80 +68,115 @@
     </div>
   </section>
 
-  <!-- Footer (rempli par src/components/footer.js) -->
   <div id="footer-container"></div>
+  <div id="form-feedback" class="feedback-message" style="display: none;"></div>
 
   <script type="module">
     import { renderHeader, initHeaderEvents } from './src/components/header.js';
     import { renderFooter } from './src/components/footer.js';
+    import { requireAuth } from './src/utils/guard.js';
+    import { ClaimsService } from './src/services/claims.service.js';
+    import { AuthService } from './src/services/auth.service.js';
 
+    requireAuth();
+
+    // 1. Initialisation Header & Footer
     document.getElementById('header-container').innerHTML = renderHeader();
     initHeaderEvents();
-
     document.getElementById('footer-container').innerHTML = renderFooter();
-  </script>
 
- <!-- Message de retour pour l'utilisateur -->
-<div id="form-feedback" class="feedback-message" style="display: none;"></div>
-
-<script type="module">
-  import { requireAuth } from './src/utils/guard.js';
-  import { ClaimsService } from './src/services/claims.service.js';
-
-  // Protection de la page
-  requireAuth();
-
-  // Génération années
-  const workDateSelect = document.getElementById('work-date');
-  const currentYear = new Date().getFullYear();
-
-  for (let year = currentYear; year >= 1900; year--) {
-    const option = document.createElement('option');
-    option.value = year;
-    option.textContent = year;
-    workDateSelect.appendChild(option);
-  }
-
-  const form = document.querySelector('.claim-form');
-  const submitBtn = form.querySelector('button[type="submit"]');
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Envoi en cours...';
-
-    const checkedTags = Array.from(document.querySelectorAll('.tag-option input[type="checkbox"]:checked'))
-      .map((checkbox) => checkbox.value);
-
-    const formData = {
-      characterName: document.getElementById('character-name').value.trim(),
-      work: document.getElementById('work').value.trim(),
-      workYear: document.getElementById('work-date').value,
-      tags: checkedTags,
-      description: document.getElementById('description').value.trim(),
-      id_category: 'cat-0', 
-      id_status: 'stat-1'
-    };
-
-    try {
-      const response = await ClaimsService.createClaim(formData);
-
-      // Redirection  réponse BDD
-      const params = new URLSearchParams({
-        ref: response.claim.id,
-        name: formData.characterName,
-        work: formData.work
-      });
-
-      window.location.href = `confirmation.html?${params.toString()}`;
-    } catch (error) {
-      alert(error.message);
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Envoyer ma réclamation';
+    // 2. Génération dynamique des années
+    const workDateSelect = document.getElementById('work-date');
+    const currentYear = new Date().getFullYear();
+    for (let year = currentYear; year >= 1900; year--) {
+      const option = document.createElement('option');
+      option.value = year;
+      option.textContent = year;
+      workDateSelect.appendChild(option);
     }
-  });
-</script>
 
+    // 3. Chargement dynamique des Rôles
+    const roleSelect = document.getElementById('id_character_role');
+    async function loadRoles() {
+      try {
+        const res = await fetch('/api/roles');
+        if (!res.ok) return;
+        const roles = await res.json();
+        roles.forEach(role => {
+          const opt = document.createElement('option');
+          opt.value = role.id;
+          opt.textContent = role.name;
+          roleSelect.appendChild(opt);
+        });
+      } catch (err) {
+        console.error('Erreur chargement rôles:', err);
+      }
+    }
+
+    // 4. Pré-remplissage basé sur le profil utilisateur
+    async function prefillFromProfile() {
+      await loadRoles();
+      try {
+        const profile = await AuthService.getProfile();
+        if (!profile) return;
+
+        if (profile.name) {
+          document.getElementById('character-name').value = `${profile.name} ${profile.surname || ''}`.trim();
+        }
+        if (profile.fictive_work) {
+          document.getElementById('work').value = profile.fictive_work;
+        }
+        if (profile.year) {
+          workDateSelect.value = profile.year;
+        }
+        if (profile.id_character_role) {
+          roleSelect.value = profile.id_character_role;
+        }
+      } catch (e) {
+        console.warn('Impossible de charger les données du profil :', e);
+      }
+    }
+
+    prefillFromProfile();
+
+    // 5. Soumission de la réclamation
+    const form = document.querySelector('.claim-form');
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Envoi en cours...';
+
+      const checkedTags = Array.from(document.querySelectorAll('.tag-option input[type="checkbox"]:checked'))
+        .map(cb => cb.value);
+
+      const formData = {
+        characterName: document.getElementById('character-name').value.trim(),
+        work: document.getElementById('work').value.trim(),
+        workYear: workDateSelect.value,
+        id_character_role: roleSelect.value,
+        tags: checkedTags,
+        description: document.getElementById('description').value.trim(),
+        id_category: 'cat-0',
+        id_status: 'stat-1'
+      };
+
+      try {
+        const response = await ClaimsService.createClaim(formData);
+        const params = new URLSearchParams({
+          ref: response.claim.id,
+          name: formData.characterName,
+          work: formData.work
+        });
+
+        window.location.href = `confirmation.html?${params.toString()}`;
+      } catch (error) {
+        alert(error.message);
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Envoyer ma réclamation';
+      }
+    });
+  </script>
 </body>
 </html>
