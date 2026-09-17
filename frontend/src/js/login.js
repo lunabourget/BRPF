@@ -49,9 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function loadRoles() {
     if (!roleSelect) return;
     try {
-      const response = await fetch('/api/roles');
-      if (!response.ok) return;
-      const roles = await response.json();
+      const roles = await AuthService.getRoles();
       
       roles.forEach(role => {
         const option = document.createElement('option');
