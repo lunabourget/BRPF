@@ -19,3 +19,12 @@ export function renderNavbar() {
     </header>
   `;
 }
+
+export function initNavbarEvents() {
+  const logoutBtn = document.getElementById('logout-btn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      // Logique de déconnexion
+    });
+  }
+}
