@@ -4,8 +4,13 @@ import authRoutes from './routes/auth.routes.js';
 import claimRoutes from './routes/claim.routes.js';
 import referenceRoutes from './routes/references.routes.js';
 import { initDb } from './repositories/db.js';
+import { seedDemo } from './scripts/seed-demo.js';
 
 initDb();
+
+if (process.env.SEED_DEMO === 'true') {
+  await seedDemo();
+}
 
 const app = express();
 

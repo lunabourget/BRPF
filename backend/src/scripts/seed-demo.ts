@@ -5,9 +5,7 @@ const demoUserId = 'demo-user-global-preview';
 const demoEmail = 'demo@brpf.local';
 const demoPassword = 'Demo2026!';
 
-async function seedDemo(): Promise<void> {
-  initDb();
-
+export async function seedDemo(): Promise<void> {
   const passwordHash = await bcrypt.hash(demoPassword, 10);
   const insertUser = db.prepare(`
     INSERT INTO users (
@@ -98,11 +96,15 @@ async function seedDemo(): Promise<void> {
   console.log(`Email : ${demoEmail}`);
   console.log(`Mot de passe : ${demoPassword}`);
   console.log('Les réclamations couvrent les statuts : En cours, Acceptée, Refusée et Annulée.');
-  db.close();
 }
 
-seedDemo().catch((error) => {
-  console.error('Échec de l’injection des données de démonstration :', error);
-  db.close();
-  process.exitCode = 1;
-});
+if (process.argv[1]?.endsWith('seed-demo.js')) {
+  initDb();
+  seedDemo()
+    .then(() => db.close())
+    .catch((error) => {
+      console.error('Échec de l’injection des données de démonstration :', error);
+      db.close();
+      process.exitCode = 1;
+    });
+}
