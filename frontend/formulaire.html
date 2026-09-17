@@ -83,12 +83,16 @@
     import { ClaimsService } from './src/services/claims.service.js';
     import { AuthService } from './src/services/auth.service.js';
 
-    requireAuth();
+    if (!requireAuth()) {
+      throw new Error('Authentification requise.');
+    }
 
     // 1. Initialisation Header & Footer
-    document.getElementById('header-container').innerHTML = renderHeader();
+    const headerContainer = document.getElementById('header-container');
+    const footerContainer = document.getElementById('footer-container');
+    headerContainer.innerHTML = renderHeader();
     initHeaderEvents();
-    document.getElementById('footer-container').innerHTML = renderFooter();
+    footerContainer.innerHTML = renderFooter();
 
     // 2. Génération dynamique des années
     const workDateSelect = document.getElementById('work-date');
