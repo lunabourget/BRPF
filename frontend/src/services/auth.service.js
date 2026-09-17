@@ -37,9 +37,9 @@ export const AuthService = {
     try {
       const response = await fetch(`${API_URL}/roles`);
       if (!response.ok) return [];
-      return await response.json();
+      return await response.json(); // Renvoie un tableau d'objets [{ id, name }, ...]
     } catch (err) {
-      console.error('Erreur chargement rôles:', err);
+      console.error('Erreur lors de la récupération des rôles :', err);
       return [];
     }
   },
