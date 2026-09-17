@@ -65,6 +65,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  async function populateRoleDropdown() {
+    if (!roleSelect) return;
+
+    const roles = await AuthService.getRoles();
+    
+    roles.forEach((role) => {
+      const option = document.createElement('option');
+      option.value = role.id;       // Valeur envoyée au serveur (id ou nom selon ta BD)
+      option.textContent = role.name; // Texte affiché à l'utilisateur
+      roleSelect.appendChild(option);
+    });
+  }
+
+  // Initialisation du menu déroulant
+  populateRoleDropdown();
+
   // 5. Soumission du formulaire d'INSCRIPTION
   registerForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -77,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
       password: document.getElementById('reg-password').value,
       lastName: document.getElementById('reg-lastname').value.trim() || undefined,
       workOrigin: document.getElementById('reg-work').value.trim() || undefined,
-      role: document.getElementById('reg-role').value.trim() || undefined
+      role: roleSelect.value || undefined
     };
 
     try {
