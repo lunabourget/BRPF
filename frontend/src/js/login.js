@@ -1,9 +1,7 @@
 import { AuthService } from '../services/auth.service.js';
-import Navbar from '../components/navbar.js';
+// FIX : Import nommé au lieu de l'import par défaut
+import { renderNavbar, initNavbarEvents } from '../components/navbar.js';
 
-// Utilisation :
-headerContainer.innerHTML = Navbar.renderNavbar();
-Navbar.initNavbarEvents();
 document.addEventListener('DOMContentLoaded', () => {
   console.log('🚀 login.js chargé avec succès !');
 
@@ -27,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const loginForm = document.getElementById('login-form');
   const registerForm = document.getElementById('register-form');
   const feedback = document.getElementById('auth-feedback');
-  // FIX: Déclaration manquante de roleSelect
   const roleSelect = document.getElementById('reg-role'); 
 
   function showFeedback(message, isError = true) {
@@ -127,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('login-email').value = userData.email;
         registerForm.reset();
-        loginBtn.click();
+        loginBtn?.click();
       } catch (err) {
         console.error('❌ [REGISTER] Erreur lors de l\'inscription :', err);
         showFeedback(err.message, true);
