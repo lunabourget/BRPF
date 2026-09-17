@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import authRoutes from './routes/auth.routes.js';
 import claimRoutes from './routes/claim.routes.js';
+import referenceRoutes from './routes/references.routes.js';
 import { initDb } from './repositories/db.js';
 
 initDb();
@@ -29,6 +30,7 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/claims', claimRoutes);
+app.use('/api', referenceRoutes);
 
 const PORT = process.env.PORT || 3000;
 
