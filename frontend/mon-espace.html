@@ -10,13 +10,13 @@
 
   <!-- Header -->
   <header class="header">
-  <a href="index.html">
+  <a href="home.html">
     <img src="./src/assets/logo.svg" alt="Logo BRPF" class="logo">
   </a>
   <nav class="nav">
-    <a href="index.html" class="nav-link">Accueil</a>
+    <a href="home.html" class="nav-link">Accueil</a>
     <a href="mon-espace.html" class="nav-link">Mon espace</a>
-    <a href="connexion.html" class="btn-login">Se connecter</a>
+    <a href="login.html" class="btn-login">Se connecter</a>
   </nav>
 </header>
 
@@ -33,9 +33,20 @@
         </div>
       </div>
       <p class="profile-description">Retrouvez ici le suivi de toutes vos réclamations, triées par statut.</p>
+
+      <div class="claims-filter">
+        <label for="status-filter">Filtrer par statut</label>
+        <select id="status-filter">
+          <option value="all">Toutes les réclamations</option>
+          <option value="pending">En cours</option>
+          <option value="accepted">Acceptées</option>
+          <option value="rejected">Refusées</option>
+          <option value="invalid">Invalides</option>
+        </select>
+      </div>
     </div>
 
-    <div class="claims-section">
+    <div class="claims-section" data-status="pending">
       <h2>En cours</h2>
       <div class="claims-list">
 
@@ -65,7 +76,7 @@
       </div>
     </div>
 
-    <div class="claims-section">
+    <div class="claims-section" data-status="accepted">
       <h2>Acceptées</h2>
       <div class="claims-list">
 
@@ -87,7 +98,7 @@
       </div>
     </div>
 
-    <div class="claims-section">
+    <div class="claims-section" data-status="rejected">
       <h2>Refusées</h2>
       <div class="claims-list">
 
@@ -109,7 +120,7 @@
       </div>
     </div>
 
-    <div class="claims-section">
+    <div class="claims-section" data-status="invalid">
       <h2>Invalides</h2>
       <div class="claims-list">
 
@@ -131,6 +142,19 @@
       </div>
     </div>
   </section>
+
+  <script>
+    const statusFilter = document.getElementById('status-filter');
+    const claimsSections = document.querySelectorAll('.claims-section');
+
+    statusFilter.addEventListener('change', () => {
+      const selected = statusFilter.value;
+
+      claimsSections.forEach((section) => {
+        section.hidden = selected !== 'all' && section.dataset.status !== selected;
+      });
+    });
+  </script>
 
 </body>
 </html>
