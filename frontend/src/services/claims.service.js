@@ -2,6 +2,28 @@ import { API_URL, AuthService } from './auth.service.js';
 
 export const ClaimsService = {
 
+  async getUserClaims() {
+    const token = AuthService.getToken();
+    const user = await AuthService.getProfile();
+
+    if (!token || !user) {
+      throw new Error('Vous devez être connecté pour consulter vos réclamations.');
+    }
+
+    const response = await fetch(`${API_URL}/claims`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.error || 'Erreur lors de la récupération des réclamations.');
+    }
+
+    return data;
+  },
+
   async createClaim(formData) {
     const token = AuthService.getToken();
     const user = await AuthService.getProfile();
