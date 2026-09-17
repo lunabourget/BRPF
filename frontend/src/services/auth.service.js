@@ -28,7 +28,7 @@ export const AuthService = {
       email: userData.email ? userData.email.trim() : '',
       password: userData.password,
       fictive_work: userData.workOrigin || userData.fictive_work || null,
-      year: userData.year ? Number(userData.year) : null,
+      year: userData.year !== undefined && userData.year !== '' ? Number(userData.year) : null,
       id_character_role: userData.role || userData.id_character_role || null,
       id_media: userData.id_media || null,
       author: userData.author || null

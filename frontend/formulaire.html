@@ -128,11 +128,15 @@
         if (profile.fictive_work) {
           document.getElementById('work').value = profile.fictive_work;
         }
-        if (profile.year) {
-          workDateSelect.value = profile.year;
+        if (profile.year !== null && profile.year !== undefined) {
+          workDateSelect.value = String(profile.year);
         }
         if (profile.id_character_role) {
-          roleSelect.value = profile.id_character_role;
+          roleSelect.value = String(profile.id_character_role);
+        } else if (profile.character_role) {
+          const matchingRole = Array.from(roleSelect.options)
+            .find(option => option.textContent === profile.character_role);
+          if (matchingRole) roleSelect.value = matchingRole.value;
         }
       } catch (e) {
         console.warn('Impossible de charger les données du profil :', e);
