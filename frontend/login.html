@@ -9,87 +9,6 @@
 </head>
 <body>
 
-  <!--
-    ============================================================
-    Version originale (Luna) — conservée en commentaire, au cas où.
-    Remplacée le 2026-09-17 par une mise en page connexion/inscription
-    plus classique (titre, sous-titre, lien de bascule au lieu
-    d'onglets). Le HTML a changé mais les IDs utilisés par
-    src/js/login.js (tab-login-btn, tab-register-btn, login-form,
-    register-form, auth-feedback, et tous les champs) sont conservés
-    à l'identique : la logique JS de Luna n'a pas été touchée.
-    ============================================================
-
-    <header id="header-container"></header>
-
-    <main class="auth-wrapper">
-      <div class="auth-card">
-        <div class="auth-tabs">
-          <button id="tab-login-btn" class="tab-btn active">Connexion</button>
-          <button id="tab-register-btn" class="tab-btn">Créer un compte</button>
-        </div>
-
-        <div id="auth-feedback" class="feedback-message"></div>
-
-        <form id="login-form" class="auth-form active">
-          <h2>Connexion</h2>
-
-          <div class="form-group">
-            <label for="login-email">Adresse email <span class="required">*</span></label>
-            <input type="email" id="login-email" required placeholder="nom@exemple.fr">
-          </div>
-
-          <div class="form-group">
-            <label for="login-password">Mot de passe <span class="required">*</span></label>
-            <input type="password" id="login-password" required placeholder="••••••••">
-          </div>
-
-          <button type="submit" class="btn-primary">Se connecter</button>
-        </form>
-
-        <form id="register-form" class="auth-form">
-          <h2>Créer un compte</h2>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="reg-firstname">Prénom <span class="required">*</span></label>
-              <input type="text" id="reg-firstname" required placeholder="Ex: Bilbo">
-            </div>
-
-            <div class="form-group">
-              <label for="reg-lastname">Nom</label>
-              <input type="text" id="reg-lastname" placeholder="Ex: Sacquet">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="reg-email">Adresse email <span class="required">*</span></label>
-            <input type="email" id="reg-email" required placeholder="bilbo@lacomte.fr">
-          </div>
-
-          <div class="form-group">
-            <label for="reg-password">Mot de passe <span class="required">*</span></label>
-            <input type="password" id="reg-password" required minlength="6" placeholder="At moins 6 caractères">
-          </div>
-
-          <div class="form-group">
-            <label for="reg-work">Œuvre / Univers d'origine</label>
-            <input type="text" id="reg-work" placeholder="Ex: Le Seigneur des Anneaux">
-          </div>
-
-          <div class="form-group">
-          <label for="reg-role">Rôle du personnage</label>
-          <select id="reg-role">
-              <option value="">-- Sélectionner un rôle --</option>
-          </select>
-          </div>
-
-          <button type="submit" class="btn-primary">S'inscrire</button>
-        </form>
-      </div>
-    </main>
-  -->
-
   <main class="auth-wrapper">
     <div class="auth-card">
       <div id="auth-feedback" class="feedback-message"></div>
@@ -163,15 +82,7 @@
         <div class="form-group">
           <label for="reg-role">Rôle du personnage</label>
           <select id="reg-role">
-            <option value="">-- Sélectionner un rôle --</option>
-            <option value="role-1">Héros·ïne</option>
-            <option value="role-2">Méchant·e / Antagoniste</option>
-            <option value="role-3">Personnage secondaire</option>
-            <option value="role-4">Mentor·e</option>
-            <option value="role-5">Acolyte / Faire-valoir</option>
-            <option value="role-6">Narrateur·ice</option>
-            <option value="role-7">Figurant·e</option>
-            <option value="role-8">Autre</option>
+            <option value="">-- Sélectionnez un rôle --</option>
           </select>
         </div>
 
