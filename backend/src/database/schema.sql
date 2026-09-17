@@ -61,39 +61,39 @@ CREATE TABLE IF NOT EXISTS responses (
 
 
 -- 1. Statuts
-INSERT INTO status (id, name) VALUES 
+INSERT OR IGNORE INTO status (id, name) VALUES 
   ('stat-1', 'En cours'),
   ('stat-2', 'Acceptée'),
   ('stat-3', 'Refusée'),
   ('stat-4', 'Invalide');
 
 -- 2. Catégories / Tags
-INSERT INTO categories (id, name) VALUES 
+INSERT OR IGNORE INTO categories (id, name) VALUES 
   ('cat-1', 'Scénario incohérent'),
   ('cat-2', 'Mort injustifiée'),
   ('cat-3', 'Temps d écran insuffisant'),
   ('cat-4', 'Dialogue médiocre');
 
 -- 3. Médias
-INSERT INTO medias (id, name) VALUES 
+INSERT OR IGNORE INTO medias (id, name) VALUES 
   ('med-1', 'Film'),
   ('med-2', 'Jeu Vidéo'),
   ('med-3', 'Livre');
 
 -- 4. Rôles
-INSERT INTO character_roles (id, name) VALUES 
+INSERT OR IGNORE INTO character_roles (id, name) VALUES 
   ('role-1', 'Héros'),
   ('role-2', 'Méchant'),
   ('role-3', 'Secondaire');
 
 -- 5. Utilisateur de test
-INSERT INTO users (id, name, surname, email, password, fictive_work, year, id_character_role, id_media, author) VALUES 
+INSERT OR IGNORE INTO users (id, name, surname, email, password, fictive_work, year, id_character_role, id_media, author) VALUES 
   ('user-1', 'Shrek', 'L Ogre', 'shrek@fort-fort-lointain.fr', 'Ogre2026!', 'Shrek 1', 2001, 'role-1', 'med-1', 'DreamWorks');
 
 -- 6. Réclamation de test
-INSERT INTO claims (id, name, id_user, id_status, id_category, nb_refus) VALUES 
+INSERT OR IGNORE INTO claims (id, name, id_user, id_status, id_category, nb_refus) VALUES 
   ('claim-1', 'Contestation de l expulsion du marais', 'user-1', 'stat-3', 'cat-1', 1);
 
 -- 7. Réponse associée à la réclamation
-INSERT INTO responses (id, text, id_claim) VALUES 
+INSERT OR IGNORE INTO responses (id, text, id_claim) VALUES 
   ('resp-1', 'Réclamation refusée par le SAV : Votre mort apporte de la profondeur dramatique à l œuvre.', 'claim-1');
