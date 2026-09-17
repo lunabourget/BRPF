@@ -4,16 +4,17 @@ export const API_URL = window.location.hostname === 'localhost' || window.locati
 
 export const AuthService = {
   async login(email, password) {
+    const cleanEmail = email ? email.trim() : '';
+
     const response = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ email: cleanEmail, password })
     });
 
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || 'Erreur lors de la connexion.');
 
-    // Stocke le token JWT dans le navigateur
     if (data.token) {
       localStorage.setItem('token', data.token);
     }
@@ -21,11 +22,10 @@ export const AuthService = {
   },
 
   async register(userData) {
-    // Normalisation des champs pour le repository + gestion des nullables
     const payload = {
       name: userData.firstName || userData.name || null,
       surname: userData.lastName || userData.surname || null,
-      email: userData.email,
+      email: userData.email ? userData.email.trim() : '',
       password: userData.password,
       fictive_work: userData.workOrigin || userData.fictive_work || null,
       year: userData.year ? Number(userData.year) : null,
@@ -44,7 +44,7 @@ export const AuthService = {
     if (!response.ok) throw new Error(data.error || "Erreur lors de l'inscription.");
     return data;
   },
-
+  
   async getRoles() {
     try {
       const response = await fetch(`${API_URL}/roles`);
