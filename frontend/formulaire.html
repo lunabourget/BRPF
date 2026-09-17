@@ -178,7 +178,9 @@
         const params = new URLSearchParams({
           ref: response.claim.id,
           name: `${formData.characterFirstName} ${formData.characterLastName}`.trim(),
-          work: formData.work
+          work: formData.work,
+          year: formData.workYear,
+          description: formData.description
         });
 
         window.location.href = `confirmation.html?${params.toString()}`;

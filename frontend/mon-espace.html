@@ -93,7 +93,10 @@
         ? `<span class="claim-tag">${claim.character_role}</span>`
         : '';
       const response = claim.response
-        ? `<div class="claim-justification"><p class="claim-justification-label">Réponse</p><p class="claim-justification-text"></p></div>`
+        ? `<div class="claim-justification claim-response"><p class="claim-justification-label">Réponse</p><p class="claim-justification-text"></p></div>`
+        : '';
+      const description = claim.description
+        ? `<div class="claim-justification claim-description"><p class="claim-justification-label">Contenu de la réclamation</p><p class="claim-justification-text"></p></div>`
         : '';
       const contestButton = statusKey === 'rejected'
         ? `<button type="button" class="btn-secondary contest-btn" data-claim-id="${claim.id}"${claim.nb_refus >= 3 ? ' disabled' : ''}>${claim.nb_refus >= 3 ? 'Limite de signalements atteinte' : 'Signaler ce refus'}</button>`
@@ -107,11 +110,13 @@
         <div class="claim-tags">${role}</div>
         <p class="claim-ref">Réf. ${claim.id}</p>
         <p class="claim-ref">Envoyée le ${formatDate(claim.created_at)}</p>
+        ${description}
         ${response}
         ${contestButton}
       `;
       article.querySelector('h3').textContent = claim.name;
-      if (claim.response) article.querySelector('.claim-justification-text').textContent = claim.response;
+      if (claim.description) article.querySelector('.claim-description .claim-justification-text').textContent = claim.description;
+      if (claim.response) article.querySelector('.claim-response .claim-justification-text').textContent = claim.response;
       article.querySelector('.contest-btn')?.addEventListener('click', async (event) => {
         const button = event.currentTarget;
         button.disabled = true;

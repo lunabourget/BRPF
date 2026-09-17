@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS claims (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
+    description TEXT,
     id_user TEXT NOT NULL,
     id_character_role TEXT,
     id_status TEXT NOT NULL,
@@ -101,8 +102,12 @@ INSERT OR IGNORE INTO users (id, name, surname, email, password, fictive_work, y
   ('user-1', 'Shrek', 'L Ogre', 'shrek@fort-fort-lointain.fr', 'Ogre2026!', 'Shrek 1', 2001, 'role-1', 'med-1', 'DreamWorks');
 
 -- 6. Réclamation de test
-INSERT OR IGNORE INTO claims (id, name, id_user, id_status, id_category, nb_refus) VALUES 
-  ('claim-1', 'Contestation de l expulsion du marais', 'user-1', 'stat-3', 'cat-1', 1);
+INSERT OR IGNORE INTO claims (id, name, description, id_user, id_status, id_category, nb_refus) VALUES 
+  ('claim-1', 'Contestation de l expulsion du marais', 'Je conteste mon expulsion du marais et demande la réévaluation de cette décision.', 'user-1', 'stat-3', 'cat-1', 1);
+
+UPDATE claims
+SET description = 'Je conteste mon expulsion du marais et demande la réévaluation de cette décision.'
+WHERE id = 'claim-1' AND description IS NULL;
 
 -- 7. Réponse associée à la réclamation
 INSERT OR IGNORE INTO responses (id, text, id_claim) VALUES 

@@ -36,6 +36,7 @@ export const ClaimsService = {
 
     const claimPayload = {
       name: formattedName,
+      description: formData.description,
       id_user: user.id,
       id_character_role: formData.id_character_role,
       id_status: formData.id_status || 'stat-1',
