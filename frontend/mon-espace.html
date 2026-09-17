@@ -34,6 +34,7 @@
           <option value="accepted">Acceptées</option>
           <option value="rejected">Refusées</option>
           <option value="invalid">Invalides</option>
+          <option value="cancelled">Annulées</option>
         </select>
       </div>
     </div>
@@ -64,13 +65,15 @@
       pending: 'En cours',
       accepted: 'Acceptées',
       rejected: 'Refusées',
-      invalid: 'Invalides'
+      invalid: 'Invalides',
+      cancelled: 'Annulées'
     };
 
     function getStatusKey(status) {
       const normalizedStatus = (status || '').toLowerCase();
       if (normalizedStatus.includes('accept')) return 'accepted';
       if (normalizedStatus.includes('refus')) return 'rejected';
+      if (normalizedStatus.includes('annul')) return 'cancelled';
       if (normalizedStatus.includes('invalid')) return 'invalid';
       return 'pending';
     }
@@ -110,7 +113,6 @@
         <div class="claim-tags">${role}</div>
         <p class="claim-ref">Réf. ${claim.id}</p>
         <p class="claim-ref">Envoyée le ${formatDate(claim.created_at)}</p>
-        ${description}
         ${response}
         ${contestButton}
       `;
@@ -137,7 +139,7 @@
       const container = document.getElementById('claims-container');
       container.innerHTML = '';
 
-      const groupedClaims = { pending: [], accepted: [], rejected: [], invalid: [] };
+      const groupedClaims = { pending: [], accepted: [], rejected: [], invalid: [], cancelled: [] };
       claims.forEach(claim => groupedClaims[getStatusKey(claim.status)].push(claim));
 
       Object.entries(groupedClaims).forEach(([statusKey, statusClaims]) => {

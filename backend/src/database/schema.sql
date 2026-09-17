@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS categories (
 CREATE TABLE IF NOT EXISTS users (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
-    surname TEXT NOT NULL,
+    surname TEXT,
     fictive_work TEXT,
     year INTEGER,
     id_character_role TEXT,
@@ -40,7 +40,6 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS claims (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
-    description TEXT,
     id_user TEXT NOT NULL,
     id_character_role TEXT,
     id_status TEXT NOT NULL,
@@ -68,7 +67,8 @@ INSERT OR IGNORE INTO status (id, name) VALUES
   ('stat-1', 'En cours'),
   ('stat-2', 'Acceptée'),
   ('stat-3', 'Refusée'),
-  ('stat-4', 'Invalide');
+  ('stat-4', 'Invalide'),
+  ('stat-5', 'Annulée');
 
 -- 2. Catégories / Tags
 INSERT OR IGNORE INTO categories (id, name) VALUES 
@@ -102,12 +102,8 @@ INSERT OR IGNORE INTO users (id, name, surname, email, password, fictive_work, y
   ('user-1', 'Shrek', 'L Ogre', 'shrek@fort-fort-lointain.fr', 'Ogre2026!', 'Shrek 1', 2001, 'role-1', 'med-1', 'DreamWorks');
 
 -- 6. Réclamation de test
-INSERT OR IGNORE INTO claims (id, name, description, id_user, id_status, id_category, nb_refus) VALUES 
-  ('claim-1', 'Contestation de l expulsion du marais', 'Je conteste mon expulsion du marais et demande la réévaluation de cette décision.', 'user-1', 'stat-3', 'cat-1', 1);
-
-UPDATE claims
-SET description = 'Je conteste mon expulsion du marais et demande la réévaluation de cette décision.'
-WHERE id = 'claim-1' AND description IS NULL;
+INSERT OR IGNORE INTO claims (id, name, id_user, id_status, id_category, nb_refus) VALUES 
+  ('claim-1', 'Je conteste mon expulsion du marais et demande la réévaluation de cette décision.', 'user-1', 'stat-3', 'cat-1', 1);
 
 -- 7. Réponse associée à la réclamation
 INSERT OR IGNORE INTO responses (id, text, id_claim) VALUES 

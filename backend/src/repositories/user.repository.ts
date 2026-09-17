@@ -24,7 +24,7 @@ export class UserRepository {
     stmt.run(
       id,
       userData.name || null,
-      userData.surname,
+      userData.surname || '',
       userData.email,
       userData.password,
       userData.fictive_work || null,
