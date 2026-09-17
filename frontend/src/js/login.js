@@ -1,14 +1,13 @@
 import { AuthService } from '../services/auth.service.js';
-import { renderNavbar, initNavbarEvents } from '../components/navbar.js';
+import { renderNavbar } from '../components/navbar.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log('🚀 login.js chargé avec succès !');
 
-  // 1. Initialiser le header
+  // 1. Initialiser le header (sans écouteur de déconnexion inutile ici)
   const headerContainer = document.getElementById('header-container');
   if (headerContainer) {
     headerContainer.innerHTML = renderNavbar();
-    initNavbarEvents();
   }
 
   // 2. Rediriger si déjà connecté
@@ -43,16 +42,16 @@ document.addEventListener('DOMContentLoaded', () => {
     loginBtn.addEventListener('click', () => {
       loginBtn.classList.add('active');
       registerBtn.classList.remove('active');
-      loginForm.classList.add('active');
-      registerForm.classList.remove('active');
+      loginForm?.classList.add('active');
+      registerForm?.classList.remove('active');
       clearFeedback();
     });
 
     registerBtn.addEventListener('click', () => {
       registerBtn.classList.add('active');
       loginBtn.classList.remove('active');
-      registerForm.classList.add('active');
-      loginForm.classList.remove('active');
+      registerForm?.classList.add('active');
+      loginForm?.classList.remove('active');
       clearFeedback();
     });
   }
@@ -63,8 +62,13 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       clearFeedback();
 
-      const email = document.getElementById('login-email').value.trim();
-      const password = document.getElementById('login-password').value;
+      const emailInput = document.getElementById('login-email');
+      const passwordInput = document.getElementById('login-password');
+
+      if (!emailInput || !passwordInput) return;
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
 
       console.log('🔄 [LOGIN] Tentative de connexion pour :', email);
 
@@ -105,10 +109,16 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       clearFeedback();
 
+      const firstNameEl = document.getElementById('reg-firstname');
+      const emailEl = document.getElementById('reg-email');
+      const passwordEl = document.getElementById('reg-password');
+
+      if (!firstNameEl || !emailEl || !passwordEl) return;
+
       const userData = {
-        firstName: document.getElementById('reg-firstname').value.trim(),
-        email: document.getElementById('reg-email').value.trim(),
-        password: document.getElementById('reg-password').value,
+        firstName: firstNameEl.value.trim(),
+        email: emailEl.value.trim(),
+        password: passwordEl.value,
         lastName: document.getElementById('reg-lastname')?.value.trim() || undefined,
         workOrigin: document.getElementById('reg-work')?.value.trim() || undefined,
         role: roleSelect?.value || undefined
@@ -121,7 +131,11 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('✅ [REGISTER] Inscription réussie !');
         showFeedback('Compte créé avec succès ! Connectez-vous.', false);
 
-        document.getElementById('login-email').value = userData.email;
+        const loginEmailEl = document.getElementById('login-email');
+        if (loginEmailEl) {
+          loginEmailEl.value = userData.email;
+        }
+
         registerForm.reset();
         loginBtn?.click();
       } catch (err) {
