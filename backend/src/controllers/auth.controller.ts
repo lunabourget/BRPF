@@ -61,21 +61,31 @@ export class AuthController {
     try {
       const { email, password } = req.body;
 
+      console.log('--- 🔍 DEBOGAGE LOGIN ---');
+      console.log('1. Données reçues :', { email, password });
+
       if (typeof email !== 'string' || typeof password !== 'string') {
         res.status(400).json({ error: 'Email et mot de passe requis.' });
         return;
       }
 
       const cleanEmail = email.trim().toLowerCase();
+      console.log('2. Email nettoyé :', cleanEmail);
 
       const user = this.userRepository.findByEmail(cleanEmail);
+      console.log('3. Utilisateur trouvé en BDD :', user ? { id: user.id, email: user.email, hash: user.password } : 'AUCUN');
+
       if (!user || !user.password) {
+        console.log('❌ Échec : Utilisateur non trouvé ou pas de mot de passe.');
         res.status(401).json({ error: 'Identifiants incorrects.' });
         return;
       }
 
       const isPasswordValid = await bcrypt.compare(password, user.password);
+      console.log('4. Résultat bcrypt.compare :', isPasswordValid);
+
       if (!isPasswordValid) {
+        console.log('❌ Échec : Le mot de passe ne correspond pas au hash.');
         res.status(401).json({ error: 'Identifiants incorrects.' });
         return;
       }
@@ -89,7 +99,7 @@ export class AuthController {
       const { password: _, ...userWithoutPassword } = user;
       res.json({ message: 'Connexion réussie', token, user: userWithoutPassword });
     } catch (error) {
-      console.error("Erreur login:", error);
+      console.error('Erreur login:', error);
       res.status(500).json({ error: 'Erreur lors de la connexion.' });
     }
   }
