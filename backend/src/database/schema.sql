@@ -84,7 +84,7 @@ INSERT OR IGNORE INTO medias (id, name) VALUES
   ('med-3', 'Livre');
 
 -- 4. Rôles
-INSERT OR IGNORE INTO character_roles (id, name) VALUES 
+INSERT INTO character_roles (id, name) VALUES 
   ('role-1', 'Héros·ïne'),
   ('role-2', 'Méchant·e'),
   ('role-3', 'Personnage secondaire'),
@@ -92,7 +92,8 @@ INSERT OR IGNORE INTO character_roles (id, name) VALUES
   ('role-5', 'Acolyte / Faire-valoir'),
   ('role-6', 'Narrateur·ice'),
   ('role-7', 'Figurant·e'),
-  ('role-8', 'Autre');
+  ('role-8', 'Autre')
+ON CONFLICT(id) DO UPDATE SET name = excluded.name;
 
 
 -- 5. Utilisateur de test
