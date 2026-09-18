@@ -29,20 +29,20 @@ export async function seedDemo(): Promise<void> {
 
     insertUser.run(
       demoUserId,
-      'Ariane',
-      'Demo',
+      'Homer',
+      'Simpson',
       demoEmail,
       passwordHash,
-      'Les Chroniques du Labyrinthe',
-      2024,
+      'Les Simpsons',
+      1989,
       'role-1',
       'med-1',
       'BRPF Demo'
     );
 
     insertClaim.run(
-      'demo-claim-pending',
-      'Je demande que mon rôle dans le labyrinthe soit enfin reconnu.',
+      'ertjryuodrgazruryi',
+      'J’étrangle bart tout le temps, c’est pas normal !',
       demoUserId,
       'role-1',
       'stat-1',
@@ -53,7 +53,7 @@ export async function seedDemo(): Promise<void> {
 
     insertClaim.run(
       'demo-claim-accepted',
-      'Je conteste la disparition de mon arc narratif au dernier chapitre.',
+      'Je voudrais passer plus de temps au bar.',
       demoUserId,
       'role-3',
       'stat-2',
@@ -64,7 +64,7 @@ export async function seedDemo(): Promise<void> {
 
     insertClaim.run(
       'demo-claim-rejected',
-      'Je demande une réponse concernant ma fin injustifiée.',
+      'J’en peux plus des donuts, c’est pas sain pour ma santé.',
       demoUserId,
       'role-2',
       'stat-3',
@@ -74,7 +74,7 @@ export async function seedDemo(): Promise<void> {
     );
     insertResponse.run(
       'demo-response-rejected',
-      'Après examen, le comité maintient sa décision et considère cette fin cohérente avec l’œuvre.',
+      'Après examen, le comité maintient sa décision et considère cette feature comme trop attachée à votre personnage pour la retirer.',
       'demo-claim-rejected',
       '2026-03-18 16:20:00'
     );
